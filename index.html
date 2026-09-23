@@ -7,65 +7,128 @@
 <title>System</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
 
-html {
-    scroll-behavior: smooth;
+html,
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    font-family: Arial, sans-serif;
+    color: white;
 }
 
 body {
-    margin: 0;
     min-height: 100vh;
-    color: #e8f7ff;
-    font-family: Arial, sans-serif;
+    overflow-x: hidden;
 
     background:
         radial-gradient(
-            circle at 50% 20%,
-            rgba(0, 140, 255, 0.22) 0%,
-            rgba(0, 60, 140, 0.12) 25%,
-            transparent 55%
+            ellipse at 50% 15%,
+            rgba(0, 145, 255, 0.30),
+            transparent 42%
         ),
         radial-gradient(
-            circle at 15% 80%,
-            rgba(0, 110, 255, 0.16),
-            transparent 45%
+            ellipse at 15% 75%,
+            rgba(0, 80, 255, 0.18),
+            transparent 38%
         ),
         radial-gradient(
-            circle at 85% 70%,
-            rgba(0, 80, 180, 0.14),
-            transparent 45%
+            ellipse at 85% 70%,
+            rgba(0, 180, 255, 0.13),
+            transparent 40%
         ),
         linear-gradient(
             135deg,
-            #020711 0%,
-            #031322 35%,
-            #020812 70%,
-            #00040a 100%
+            #00040b,
+            #020d1c 45%,
+            #00040b
         );
-
-    background-attachment: fixed;
-    overflow-x: hidden;
 }
 
-body::before {
-    content: "";
+/* BACKGROUND */
+
+.background {
     position: fixed;
     inset: 0;
+    overflow: hidden;
     pointer-events: none;
     z-index: -1;
+}
 
-    background:
+.glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: .35;
+}
+
+.glow.one {
+    width: 420px;
+    height: 420px;
+    background: #0077ff;
+    top: -150px;
+    left: 30%;
+}
+
+.glow.two {
+    width: 350px;
+    height: 350px;
+    background: #0044ff;
+    bottom: -120px;
+    left: -80px;
+}
+
+.glow.three {
+    width: 300px;
+    height: 300px;
+    background: #00aaff;
+    right: -100px;
+    bottom: 10%;
+}
+
+/* LIGHT LINES */
+
+.light-line {
+    position: absolute;
+    width: 120%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0,180,255,.35),
+        transparent
+    );
+    transform: rotate(-18deg);
+}
+
+.line1 {
+    top: 25%;
+    left: -10%;
+}
+
+.line2 {
+    top: 60%;
+    left: -10%;
+    opacity: .5;
+}
+
+/* GRID */
+
+.grid {
+    position: absolute;
+    inset: 0;
+
+    background-image:
         linear-gradient(
-            rgba(0, 140, 255, 0.025) 1px,
+            rgba(0,150,255,.035) 1px,
             transparent 1px
         ),
         linear-gradient(
             90deg,
-            rgba(0, 140, 255, 0.025) 1px,
+            rgba(0,150,255,.035) 1px,
             transparent 1px
         );
 
@@ -73,828 +136,347 @@ body::before {
 
     mask-image:
         radial-gradient(
-            circle at center,
-            black,
+            circle,
+            black 15%,
             transparent 80%
         );
 }
 
-/* BLUE LIGHT */
+/* MAIN */
 
-body::after {
-    content: "";
-    position: fixed;
-    width: 700px;
-    height: 700px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-
-    background: radial-gradient(
-        circle,
-        rgba(0, 130, 255, 0.10),
-        transparent 65%
-    );
-
-    pointer-events: none;
-    z-index: -2;
+.system {
+    width: min(1100px, 92%);
+    margin: 50px auto;
 }
 
-/* =========================
-   INTRO SCREEN
-========================= */
+/* HEADER */
 
-#introScreen,
-#registrationScreen {
-    position: fixed;
-    inset: 0;
-
+.header {
     display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(0, 100, 255, 0.15),
-            rgba(0, 0, 0, 0.88)
-        );
-
-    backdrop-filter: blur(16px);
-
-    z-index: 9999;
-}
-
-.introBox,
-.registrationBox {
-    width: min(600px, 90%);
-
-    padding: 45px 35px;
-
-    text-align: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0, 80, 150, 0.20),
-            rgba(0, 10, 25, 0.68)
-        );
-
-    border: 1px solid rgba(0, 170, 255, 0.65);
-
-    box-shadow:
-        0 0 20px rgba(0, 130, 255, 0.25),
-        0 0 70px rgba(0, 100, 255, 0.12),
-        inset 0 0 30px rgba(0, 150, 255, 0.05);
-
-    backdrop-filter: blur(20px);
-
-    clip-path: polygon(
-        0 12px,
-        12px 0,
-        calc(100% - 12px) 0,
-        100% 12px,
-        100% calc(100% - 12px),
-        calc(100% - 12px) 100%,
-        12px 100%,
-        0 calc(100% - 12px)
-    );
-}
-
-.systemTitle {
-    font-size: 18px;
-    letter-spacing: 8px;
-    color: #55c8ff;
-    margin-bottom: 30px;
-}
-
-#chosenText {
-    font-size: clamp(30px, 6vw, 55px);
-    letter-spacing: 4px;
-
-    color: #ffffff;
-
-    text-shadow:
-        0 0 8px #00aaff,
-        0 0 25px rgba(0, 140, 255, 0.8);
-
-    margin: 0 0 25px;
-}
-
-.introDescription {
-    color: #b9dfff;
-    font-size: 18px;
-    line-height: 1.8;
-}
-
-.question {
-    margin-top: 15px;
-    color: #6fd5ff;
-    font-size: 20px;
-}
-
-.systemButtons {
-    margin-top: 35px;
-
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-
-.systemButtons button,
-#registerButton,
-.actionButton,
-.statButton {
-
-    border: 1px solid #00aaff;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0, 150, 255, 0.20),
-            rgba(0, 60, 120, 0.12)
-        );
-
-    color: #ffffff;
-
-    padding: 13px 30px;
-
-    cursor: pointer;
-
-    font-weight: bold;
-    letter-spacing: 2px;
-
-    box-shadow:
-        0 0 12px rgba(0, 150, 255, 0.20);
-
-    transition: 0.25s;
-}
-
-.systemButtons button:hover,
-#registerButton:hover,
-.actionButton:hover,
-.statButton:hover {
-
-    background: rgba(0, 150, 255, 0.28);
-
-    box-shadow:
-        0 0 20px rgba(0, 170, 255, 0.55);
-
-    transform: translateY(-2px);
-}
-
-#registrationScreen {
-    display: none;
-}
-
-.registrationBox h1 {
-    color: #55c8ff;
-    letter-spacing: 5px;
-}
-
-.registrationBox h2 {
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-.registrationBox p {
-    color: #a8cce6;
-}
-
-#nameInput {
-    width: 100%;
-    max-width: 400px;
-
-    padding: 15px;
-
-    margin: 25px auto;
-
-    display: block;
-
-    background: rgba(0, 20, 40, 0.7);
-
-    border: 1px solid rgba(0, 170, 255, 0.65);
-
-    color: white;
-
-    outline: none;
-
-    text-align: center;
-
-    font-size: 17px;
-}
-
-#nameInput:focus {
-    box-shadow:
-        0 0 20px rgba(0, 150, 255, 0.3);
-}
-
-#registrationError {
-    display: none;
-    color: #ff5577;
-    margin-top: 15px;
-}
-
-/* =========================
-   MAIN APP
-========================= */
-
-#app {
-    display: none;
-
-    min-height: 100vh;
-}
-
-.layout {
-    display: flex;
-    min-height: 100vh;
-}
-
-/* =========================
-   SIDEBAR
-========================= */
-
-.sidebar {
-
-    width: 230px;
-
-    padding: 25px 18px;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(0, 50, 100, 0.35),
-            rgba(0, 5, 15, 0.65)
-        );
-
-    border-right: 1px solid rgba(0, 160, 255, 0.25);
-
-    backdrop-filter: blur(15px);
-
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-}
-
-.logo {
-
-    font-size: 26px;
-
-    letter-spacing: 6px;
-
-    color: #57caff;
-
-    text-shadow:
-        0 0 15px rgba(0, 150, 255, 0.7);
-
-    margin-bottom: 45px;
-}
-
-.navButton {
-
-    width: 100%;
-
-    padding: 14px;
-
-    margin-bottom: 12px;
-
-    background: rgba(0, 90, 150, 0.08);
-
-    border: 1px solid rgba(0, 150, 255, 0.20);
-
-    color: #a9dfff;
-
-    cursor: pointer;
-
-    text-align: left;
-
-    letter-spacing: 2px;
-
-    transition: 0.25s;
-}
-
-.navButton:hover,
-.navButton.active {
-
-    color: white;
-
-    background: rgba(0, 130, 255, 0.15);
-
-    border-color: rgba(0, 170, 255, 0.6);
-
-    box-shadow:
-        0 0 15px rgba(0, 140, 255, 0.18);
-}
-
-/* =========================
-   MAIN CONTENT
-========================= */
-
-.main {
-
-    margin-left: 230px;
-
-    width: calc(100% - 230px);
-
-    padding: 35px;
-
-    max-width: 1500px;
-}
-
-.topBar {
-
-    display: flex;
-
     justify-content: space-between;
-
     align-items: center;
 
-    margin-bottom: 25px;
-}
-
-.pageTitle {
-
-    font-size: 30px;
-
-    letter-spacing: 5px;
-
-    color: #dff6ff;
-
-    text-shadow:
-        0 0 15px rgba(0, 140, 255, 0.35);
-}
-
-/* =========================
-   GLASS CARDS
-========================= */
-
-.card {
+    padding: 20px 25px;
 
     background:
         linear-gradient(
             135deg,
-            rgba(0, 90, 160, 0.13),
-            rgba(0, 15, 30, 0.55)
+            rgba(0,100,180,.16),
+            rgba(0,10,25,.55)
         );
 
-    border: 1px solid rgba(0, 160, 255, 0.25);
+    border: 1px solid rgba(0,170,255,.35);
 
     backdrop-filter: blur(18px);
 
     box-shadow:
-        0 0 25px rgba(0, 80, 150, 0.08),
-        inset 0 0 25px rgba(0, 120, 255, 0.025);
-
-    padding: 25px;
-
-    margin-bottom: 25px;
+        0 0 30px rgba(0,100,255,.10);
 }
 
-.playerCard {
+.system-logo {
+    font-size: 26px;
+    letter-spacing: 8px;
+
+    color: #8cddff;
+
+    text-shadow:
+        0 0 10px #008cff,
+        0 0 30px rgba(0,140,255,.7);
+}
+
+.status {
+    color: #59caff;
+    font-size: 12px;
+    letter-spacing: 3px;
+}
+
+/* PLAYER */
+
+.player {
+    margin-top: 20px;
 
     display: grid;
-
-    grid-template-columns:
-        1fr
-        1fr
-        1fr
-        1fr;
+    grid-template-columns: 1.4fr 1fr;
 
     gap: 20px;
 }
 
-.playerName {
+.panel {
+    position: relative;
 
-    font-size: 28px;
+    padding: 28px;
 
-    color: white;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,85,150,.17),
+            rgba(0,8,20,.62)
+        );
 
-    margin-bottom: 8px;
+    border: 1px solid rgba(0,170,255,.30);
+
+    backdrop-filter: blur(20px);
+
+    box-shadow:
+        inset 0 0 30px rgba(0,130,255,.025),
+        0 0 30px rgba(0,80,150,.08);
+}
+
+/* CORNERS */
+
+.panel::before,
+.panel::after {
+    content: "";
+    position: absolute;
+    width: 35px;
+    height: 35px;
+}
+
+.panel::before {
+    top: -1px;
+    left: -1px;
+
+    border-top: 2px solid #00aaff;
+    border-left: 2px solid #00aaff;
+}
+
+.panel::after {
+    right: -1px;
+    bottom: -1px;
+
+    border-right: 2px solid #00aaff;
+    border-bottom: 2px solid #00aaff;
 }
 
 .label {
-
-    font-size: 12px;
-
-    color: #6fb8dd;
-
-    letter-spacing: 2px;
-
-    text-transform: uppercase;
+    color: #5dbde6;
+    font-size: 11px;
+    letter-spacing: 3px;
 }
 
-.value {
+.player-name {
+    margin-top: 8px;
 
-    font-size: 22px;
+    font-size: 38px;
+    font-weight: bold;
 
-    color: #e8f8ff;
-
-    margin-top: 5px;
+    text-shadow:
+        0 0 15px rgba(0,150,255,.5);
 }
 
-/* =========================
-   XP
-========================= */
+.level {
+    margin-top: 8px;
 
-.xpSection {
-
-    margin-top: 20px;
+    color: #86dfff;
 }
 
-.xpTop {
+/* XP */
 
+.xp {
+    margin-top: 30px;
+}
+
+.xp-info {
     display: flex;
-
     justify-content: space-between;
 
-    color: #9edaff;
-
     margin-bottom: 8px;
+
+    color: #9bdfff;
+    font-size: 13px;
 }
 
-.xpBar {
+.xp-bar {
+    height: 8px;
 
-    width: 100%;
+    background: rgba(0,20,40,.9);
 
-    height: 14px;
-
-    background: rgba(0, 20, 40, 0.8);
-
-    border: 1px solid rgba(0, 150, 255, 0.25);
-
-    overflow: hidden;
+    border: 1px solid rgba(0,140,255,.25);
 }
 
-#xpFill {
-
-    width: 0%;
-
+.xp-fill {
+    width: 63%;
     height: 100%;
 
     background:
         linear-gradient(
             90deg,
-            #0077ff,
-            #35d5ff
+            #006eff,
+            #00d5ff
         );
 
     box-shadow:
-        0 0 15px rgba(0, 170, 255, 0.8);
-
-    transition: width 0.4s;
+        0 0 15px #008cff;
 }
 
-/* =========================
-   STATS
-========================= */
+/* STATS */
 
-.sectionTitle {
-
-    color: #5ecbff;
-
-    letter-spacing: 3px;
-
-    font-size: 17px;
-
-    margin-bottom: 18px;
-}
-
-.statsGrid {
-
+.stats {
     display: grid;
+    grid-template-columns: 1fr 1fr;
 
-    grid-template-columns:
-        repeat(4, 1fr);
+    gap: 12px;
 
-    gap: 15px;
+    margin-top: 20px;
 }
 
 .stat {
+    padding: 18px;
 
-    padding: 20px;
+    background: rgba(0,70,120,.09);
 
-    background:
-        rgba(0, 60, 110, 0.10);
-
-    border: 1px solid rgba(0, 140, 255, 0.18);
+    border: 1px solid rgba(0,150,255,.18);
 
     text-align: center;
 }
 
-.statName {
-
-    color: #8ac9e8;
-
-    font-size: 13px;
-
+.stat-name {
+    color: #63bce4;
+    font-size: 11px;
     letter-spacing: 2px;
 }
 
-.statValue {
+.stat-number {
+    margin-top: 8px;
 
-    font-size: 30px;
-
-    margin: 10px 0;
+    font-size: 28px;
 
     color: white;
 
     text-shadow:
-        0 0 10px rgba(0, 150, 255, 0.5);
+        0 0 12px rgba(0,150,255,.5);
 }
 
-.statButton {
+/* RIGHT PANEL */
 
-    padding: 6px 12px;
-
-    font-size: 16px;
+.rank {
+    text-align: center;
+    padding: 15px;
 }
 
-/* =========================
-   QUESTS
-========================= */
+.rank-title {
+    color: #5dbde6;
+    letter-spacing: 3px;
+    font-size: 12px;
+}
 
-.quest {
+.rank-value {
+    margin-top: 10px;
+
+    font-size: 80px;
+
+    color: #dff8ff;
+
+    text-shadow:
+        0 0 10px #008cff,
+        0 0 40px #0077ff;
+}
+
+.coins {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.coin-number {
+    margin-top: 8px;
+
+    font-size: 28px;
+
+    color: #65d5ff;
+}
+
+/* BUTTONS */
+
+.actions {
+    margin-top: 20px;
 
     display: flex;
+    gap: 12px;
+}
 
-    justify-content: space-between;
-
-    align-items: center;
-
-    padding: 18px;
-
-    margin-bottom: 12px;
+button {
+    padding: 13px 22px;
 
     background:
-        rgba(0, 60, 110, 0.10);
+        linear-gradient(
+            135deg,
+            rgba(0,140,255,.18),
+            rgba(0,50,100,.15)
+        );
+
+    border: 1px solid rgba(0,170,255,.45);
+
+    color: white;
+
+    cursor: pointer;
+
+    letter-spacing: 2px;
+
+    transition: .25s;
+}
+
+button:hover {
+    background: rgba(0,150,255,.28);
+
+    box-shadow:
+        0 0 20px rgba(0,160,255,.4);
+
+    transform: translateY(-2px);
+}
+
+/* LOWER */
+
+.lower {
+    margin-top: 20px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+.title {
+    color: #68cefa;
+
+    letter-spacing: 4px;
+
+    font-size: 13px;
+
+    margin-bottom: 20px;
+}
+
+.quest {
+    padding: 15px;
+
+    margin-bottom: 10px;
 
     border-left: 2px solid #008cff;
 
-    border-bottom: 1px solid rgba(0, 130, 255, 0.12);
+    background: rgba(0,70,120,.08);
+
+    color: #c7ecff;
 }
 
-.questTitle {
+/* MOBILE */
 
-    color: white;
+@media(max-width:800px) {
 
-    font-size: 17px;
-}
-
-.questReward {
-
-    color: #54caff;
-
-    font-size: 13px;
-}
-
-/* =========================
-   REWARDS
-========================= */
-
-.rewardGrid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 15px;
-}
-
-.reward {
-
-    padding: 25px;
-
-    text-align: center;
-
-    background:
-        rgba(0, 60, 110, 0.10);
-
-    border: 1px solid rgba(0, 150, 255, 0.18);
-}
-
-/* =========================
-   MESSAGE
-========================= */
-
-#systemMessage {
-
-    color: #58caff;
-
-    min-height: 24px;
-
-    margin-top: 15px;
-
-    font-size: 14px;
-}
-
-/* =========================
-   ADD POINTS
-========================= */
-
-.pointsBox {
-
-    display: flex;
-
-    gap: 10px;
-
-    margin-top: 15px;
-}
-
-#pointsInput {
-
-    width: 150px;
-
-    padding: 11px;
-
-    background: rgba(0, 20, 40, 0.75);
-
-    border: 1px solid rgba(0, 150, 255, 0.3);
-
-    color: white;
-
-    outline: none;
-}
-
-/* =========================
-   GLITCH
-========================= */
-
-#glitchLayer {
-
-    position: fixed;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    z-index: 10000;
-
-    opacity: 0;
-
-    background:
-        repeating-linear-gradient(
-            0deg,
-            transparent 0px,
-            transparent 3px,
-            rgba(0, 170, 255, 0.04) 4px
-        );
-}
-
-body.systemGlitch #glitchLayer {
-
-    opacity: 1;
-
-    animation:
-        glitchMove 0.12s infinite,
-        glitchFlash 0.25s infinite;
-}
-
-body.systemGlitch {
-
-    animation:
-        bodyShake 0.12s infinite;
-}
-
-@keyframes glitchMove {
-
-    0% {
-        transform: translate(0, 0);
+    .player,
+    .lower {
+        grid-template-columns: 1fr;
     }
 
-    25% {
-        transform: translate(-3px, 2px);
+    .system {
+        width: 94%;
+        margin: 20px auto;
     }
 
-    50% {
-        transform: translate(4px, -2px);
+    .player-name {
+        font-size: 30px;
     }
 
-    75% {
-        transform: translate(-2px, -3px);
-    }
-
-    100% {
-        transform: translate(0, 0);
-    }
-}
-
-@keyframes glitchFlash {
-
-    0%, 100% {
-        filter: none;
-    }
-
-    50% {
-        filter:
-            contrast(1.4)
-            brightness(1.2);
-    }
-}
-
-@keyframes bodyShake {
-
-    0% {
-        transform: translate(0);
-    }
-
-    25% {
-        transform: translate(-2px, 1px);
-    }
-
-    50% {
-        transform: translate(2px, -1px);
-    }
-
-    75% {
-        transform: translate(-1px, -2px);
-    }
-
-    100% {
-        transform: translate(0);
-    }
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 900px) {
-
-    .sidebar {
-
-        width: 180px;
-    }
-
-    .main {
-
-        margin-left: 180px;
-
-        width: calc(100% - 180px);
-
-        padding: 20px;
-    }
-
-    .playerCard {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
-    .statsGrid {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
-    .rewardGrid {
-
-        grid-template-columns:
-            1fr;
-    }
-}
-
-@media (max-width: 600px) {
-
-    .sidebar {
-
-        position: relative;
-
-        width: 100%;
-
-        height: auto;
-    }
-
-    .layout {
-
-        display: block;
-    }
-
-    .main {
-
-        margin-left: 0;
-
-        width: 100%;
-
-        padding: 15px;
-    }
-
-    .playerCard {
-
-        grid-template-columns:
-            1fr;
-    }
-
-    .statsGrid {
-
-        grid-template-columns:
-            1fr 1fr;
-    }
-
-    .topBar {
-
-        display: block;
+    .rank-value {
+        font-size: 60px;
     }
 }
 
@@ -903,1262 +485,220 @@ body.systemGlitch {
 
 <body>
 
-<div id="glitchLayer"></div>
+<div class="background">
 
-<!-- =========================
-     INTRO
-========================= -->
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+    <div class="glow three"></div>
 
-<div id="introScreen">
+    <div class="light-line line1"></div>
+    <div class="light-line line2"></div>
 
-    <div class="introBox">
+    <div class="grid"></div>
 
-        <div class="systemTitle">
+</div>
+
+
+<div class="system">
+
+    <header class="header">
+
+        <div class="system-logo">
             SYSTEM
         </div>
 
-        <h1 id="chosenText">
-            YOU HAVE BEEN CHOSEN
-        </h1>
-
-        <div class="introDescription">
-            You are the new successor.
+        <div class="status">
+            SYSTEM ONLINE
         </div>
 
-        <div class="question">
-            Will you accept?
-        </div>
-
-        <div class="systemButtons">
-
-            <button id="yesButton">
-                YES
-            </button>
-
-            <button id="noButton">
-                NO
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
+    </header>
 
 
-<!-- =========================
-     REGISTRATION
-========================= -->
+    <section class="player">
 
-<div id="registrationScreen">
+        <!-- PLAYER PANEL -->
 
-    <div class="registrationBox">
+        <div class="panel">
 
-        <div class="systemTitle">
-            SYSTEM REGISTRATION
-        </div>
-
-        <h2>
-            REGISTER PLAYER
-        </h2>
-
-        <p>
-            Enter your name to continue.
-        </p>
-
-        <input
-            type="text"
-            id="nameInput"
-            placeholder="Enter your name"
-            maxlength="25"
-        >
-
-        <button id="registerButton">
-            REGISTER
-        </button>
-
-        <div id="registrationError">
-            Please enter your name.
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =========================
-     MAIN APP
-========================= -->
-
-<div id="app">
-
-    <div class="layout">
-
-        <!-- SIDEBAR -->
-
-        <aside class="sidebar">
-
-            <div class="logo">
-                SYSTEM
+            <div class="label">
+                PLAYER
             </div>
 
-            <button
-                class="navButton active"
-                id="statusButton"
-            >
-                STATUS
-            </button>
+            <div class="player-name">
+                PLAYER
+            </div>
 
-            <button
-                class="navButton"
-                id="questsButton"
-            >
-                QUESTS
-            </button>
-
-            <button
-                class="navButton"
-                id="rewardsButton"
-            >
-                REWARDS
-            </button>
-
-        </aside>
+            <div class="level">
+                LEVEL 01
+            </div>
 
 
-        <!-- MAIN -->
+            <div class="xp">
 
-        <main class="main">
+                <div class="xp-info">
 
-            <div class="topBar">
+                    <span>EXPERIENCE</span>
 
-                <div class="pageTitle">
-                    SYSTEM
+                    <span>63 / 100</span>
+
                 </div>
 
-                <button
-                    class="actionButton"
-                    id="xpButton"
-                >
-                    +25 XP
+                <div class="xp-bar">
+
+                    <div class="xp-fill"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="stats">
+
+                <div class="stat">
+
+                    <div class="stat-name">
+                        STRENGTH
+                    </div>
+
+                    <div class="stat-number">
+                        10
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-name">
+                        AGILITY
+                    </div>
+
+                    <div class="stat-number">
+                        10
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-name">
+                        VITALITY
+                    </div>
+
+                    <div class="stat-number">
+                        10
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-name">
+                        INTELLIGENCE
+                    </div>
+
+                    <div class="stat-number">
+                        10
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RANK PANEL -->
+
+        <div class="panel">
+
+            <div class="rank">
+
+                <div class="rank-title">
+                    CURRENT RANK
+                </div>
+
+                <div class="rank-value">
+                    E
+                </div>
+
+            </div>
+
+
+            <div class="coins">
+
+                <div class="label">
+                    SYSTEM COINS
+                </div>
+
+                <div class="coin-number">
+                    0000
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <button>
+                    STATUS
+                </button>
+
+                <button>
+                    QUESTS
                 </button>
 
             </div>
 
+        </div>
 
-            <!-- PLAYER -->
+    </section>
 
-            <section class="card">
 
-                <div class="playerCard">
+    <section class="lower">
 
-                    <div>
+        <div class="panel">
 
-                        <div class="label">
-                            PLAYER
-                        </div>
+            <div class="title">
+                ACTIVE QUESTS
+            </div>
 
-                        <div
-                            class="playerName"
-                            id="playerName"
-                        >
-                            PLAYER
-                        </div>
+            <div class="quest">
+                Daily Training
+            </div>
 
-                    </div>
+            <div class="quest">
+                System Check
+            </div>
 
+            <div class="quest">
+                First Mission
+            </div>
 
-                    <div>
+        </div>
 
-                        <div class="label">
-                            LEVEL
-                        </div>
 
-                        <div
-                            class="value"
-                            id="levelValue"
-                        >
-                            1
-                        </div>
+        <div class="panel">
 
-                    </div>
+            <div class="title">
+                SYSTEM MESSAGE
+            </div>
 
+            <div class="quest">
+                The system is waiting for your next action.
+            </div>
 
-                    <div>
+            <div class="quest">
+                Complete quests to gain experience.
+            </div>
 
-                        <div class="label">
-                            RANK
-                        </div>
+        </div>
 
-                        <div
-                            class="value"
-                            id="rankValue"
-                        >
-                            E
-                        </div>
-
-                    </div>
-
-
-                    <div>
-
-                        <div class="label">
-                            COINS
-                        </div>
-
-                        <div
-                            class="value"
-                            id="coinsValue"
-                        >
-                            0
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="xpSection">
-
-                    <div class="xpTop">
-
-                        <span>
-                            EXPERIENCE
-                        </span>
-
-                        <span id="xpText">
-                            0 / 100
-                        </span>
-
-                    </div>
-
-                    <div class="xpBar">
-
-                        <div id="xpFill"></div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- STATS -->
-
-            <section class="card">
-
-                <div class="sectionTitle">
-                    PLAYER STATS
-                </div>
-
-                <div class="statsGrid">
-
-
-                    <div class="stat">
-
-                        <div class="statName">
-                            STRENGTH
-                        </div>
-
-                        <div
-                            class="statValue"
-                            id="strengthValue"
-                        >
-                            10
-                        </div>
-
-                        <button
-                            class="statButton"
-                            data-stat="strength"
-                        >
-                            +
-                        </button>
-
-                    </div>
-
-
-                    <div class="stat">
-
-                        <div class="statName">
-                            AGILITY
-                        </div>
-
-                        <div
-                            class="statValue"
-                            id="agilityValue"
-                        >
-                            10
-                        </div>
-
-                        <button
-                            class="statButton"
-                            data-stat="agility"
-                        >
-                            +
-                        </button>
-
-                    </div>
-
-
-                    <div class="stat">
-
-                        <div class="statName">
-                            VITALITY
-                        </div>
-
-                        <div
-                            class="statValue"
-                            id="vitalityValue"
-                        >
-                            10
-                        </div>
-
-                        <button
-                            class="statButton"
-                            data-stat="vitality"
-                        >
-                            +
-                        </button>
-
-                    </div>
-
-
-                    <div class="stat">
-
-                        <div class="statName">
-                            INTELLIGENCE
-                        </div>
-
-                        <div
-                            class="statValue"
-                            id="intelligenceValue"
-                        >
-                            10
-                        </div>
-
-                        <button
-                            class="statButton"
-                            data-stat="intelligence"
-                        >
-                            +
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div style="margin-top:25px;">
-
-                    <div class="label">
-                        AVAILABLE STAT POINTS
-                    </div>
-
-                    <div
-                        class="value"
-                        id="statPointsValue"
-                    >
-                        0
-                    </div>
-
-
-                    <div class="pointsBox">
-
-                        <input
-                            type="number"
-                            id="pointsInput"
-                            min="1"
-                            placeholder="Points"
-                        >
-
-                        <button
-                            class="actionButton"
-                            id="addPointsButton"
-                        >
-                            ADD POINTS
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- QUESTS -->
-
-            <section
-                class="card"
-                id="questsPanel"
-            >
-
-                <div class="sectionTitle">
-                    QUESTS
-                </div>
-
-
-                <div class="quest">
-
-                    <div>
-
-                        <div class="questTitle">
-                            Daily Training
-                        </div>
-
-                        <div class="questReward">
-                            Complete your daily training.
-                        </div>
-
-                    </div>
-
-                    <div>
-                        +50 XP
-                    </div>
-
-                </div>
-
-
-                <div class="quest">
-
-                    <div>
-
-                        <div class="questTitle">
-                            System Check
-                        </div>
-
-                        <div class="questReward">
-                            Review your status.
-                        </div>
-
-                    </div>
-
-                    <div>
-                        +25 XP
-                    </div>
-
-                </div>
-
-
-                <div class="quest">
-
-                    <div>
-
-                        <div class="questTitle">
-                            First Mission
-                        </div>
-
-                        <div class="questReward">
-                            Begin your journey.
-                        </div>
-
-                    </div>
-
-                    <div>
-                        +100 XP
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- REWARDS -->
-
-            <section
-                class="card"
-                id="rewardsPanel"
-                style="display:none;"
-            >
-
-                <div class="sectionTitle">
-                    REWARDS
-                </div>
-
-
-                <div class="rewardGrid">
-
-                    <div class="reward">
-
-                        <div class="label">
-                            REWARD
-                        </div>
-
-                        <h3>
-                            SYSTEM COINS
-                        </h3>
-
-                        <p>
-                            100 Coins
-                        </p>
-
-                    </div>
-
-
-                    <div class="reward">
-
-                        <div class="label">
-                            REWARD
-                        </div>
-
-                        <h3>
-                            XP BOOST
-                        </h3>
-
-                        <p>
-                            +50 XP
-                        </p>
-
-                    </div>
-
-
-                    <div class="reward">
-
-                        <div class="label">
-                            REWARD
-                        </div>
-
-                        <h3>
-                            RANK UP
-                        </h3>
-
-                        <p>
-                            Increase your rank.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <div id="systemMessage"></div>
-
-        </main>
-
-    </div>
+    </section>
 
 </div>
-
-
-<script>
-
-/* =========================
-   ELEMENTS
-========================= */
-
-const introScreen =
-    document.getElementById("introScreen");
-
-const registrationScreen =
-    document.getElementById("registrationScreen");
-
-const app =
-    document.getElementById("app");
-
-const yesButton =
-    document.getElementById("yesButton");
-
-const noButton =
-    document.getElementById("noButton");
-
-const registerButton =
-    document.getElementById("registerButton");
-
-const nameInput =
-    document.getElementById("nameInput");
-
-const registrationError =
-    document.getElementById("registrationError");
-
-const chosenText =
-    document.getElementById("chosenText");
-
-const glitchLayer =
-    document.getElementById("glitchLayer");
-
-
-/* =========================
-   PLAYER DATA
-========================= */
-
-let player = JSON.parse(
-    localStorage.getItem("systemPlayer")
-) || {
-
-    name: "",
-
-    level: 1,
-
-    xp: 0,
-
-    coins: 0,
-
-    rank: "E",
-
-    statPoints: 0,
-
-    stats: {
-
-        strength: 10,
-
-        agility: 10,
-
-        vitality: 10,
-
-        intelligence: 10
-
-    }
-
-};
-
-
-/* =========================
-   SAVE
-========================= */
-
-function savePlayer() {
-
-    localStorage.setItem(
-        "systemPlayer",
-        JSON.stringify(player)
-    );
-
-}
-
-
-/* =========================
-   VOICE
-========================= */
-
-function systemVoice() {
-
-    if (!("speechSynthesis" in window)) {
-        return;
-    }
-
-    speechSynthesis.cancel();
-
-    const voice =
-        new SpeechSynthesisUtterance(
-            "You are the chosen one."
-        );
-
-    voice.lang = "en-US";
-
-    voice.rate = 0.55;
-
-    voice.pitch = 0.35;
-
-    voice.volume = 1;
-
-    speechSynthesis.speak(voice);
-
-}
-
-
-/* =========================
-   GLITCH
-========================= */
-
-function startGlitch(duration = 1500) {
-
-    document.body.classList.add(
-        "systemGlitch"
-    );
-
-    setTimeout(() => {
-
-        document.body.classList.remove(
-            "systemGlitch"
-        );
-
-    }, duration);
-
-}
-
-
-/* =========================
-   INTRO
-========================= */
-
-function showIntro() {
-
-    introScreen.style.display =
-        "flex";
-
-    registrationScreen.style.display =
-        "none";
-
-    app.style.display =
-        "none";
-
-}
-
-
-function showRegistration() {
-
-    introScreen.style.display =
-        "none";
-
-    registrationScreen.style.display =
-        "flex";
-
-    app.style.display =
-        "none";
-
-    setTimeout(() => {
-
-        nameInput.focus();
-
-    }, 300);
-
-}
-
-
-function showApp() {
-
-    introScreen.style.display =
-        "none";
-
-    registrationScreen.style.display =
-        "none";
-
-    app.style.display =
-        "block";
-
-    updateUI();
-
-}
-
-
-/* =========================
-   FIRST VISIT
-========================= */
-
-const systemAccepted =
-    localStorage.getItem(
-        "systemAccepted"
-    );
-
-const savedName =
-    localStorage.getItem(
-        "systemPlayerName"
-    );
-
-
-if (
-    systemAccepted === "true" &&
-    savedName
-) {
-
-    player.name = savedName;
-
-    savePlayer();
-
-    showApp();
-
-} else {
-
-    showIntro();
-
-    setTimeout(() => {
-
-        startGlitch(1200);
-
-    }, 300);
-
-}
-
-
-/* =========================
-   YES
-========================= */
-
-yesButton.addEventListener(
-    "click",
-    () => {
-
-        systemVoice();
-
-        startGlitch(2300);
-
-        localStorage.setItem(
-            "systemAccepted",
-            "true"
-        );
-
-        setTimeout(() => {
-
-            showRegistration();
-
-        }, 900);
-
-    }
-);
-
-
-/* =========================
-   NO
-========================= */
-
-noButton.addEventListener(
-    "click",
-    () => {
-
-        startGlitch(1000);
-
-        chosenText.textContent =
-            "CONNECTION REJECTED";
-
-        noButton.style.display =
-            "none";
-
-        yesButton.textContent =
-            "ACCEPT";
-
-    }
-);
-
-
-/* =========================
-   REGISTER
-========================= */
-
-registerButton.addEventListener(
-    "click",
-    registerPlayer
-);
-
-
-nameInput.addEventListener(
-    "keydown",
-    (event) => {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            registerPlayer();
-
-        }
-
-    }
-);
-
-
-function registerPlayer() {
-
-    const name =
-        nameInput.value.trim();
-
-
-    if (!name) {
-
-        registrationError.style.display =
-            "block";
-
-        return;
-
-    }
-
-
-    registrationError.style.display =
-        "none";
-
-
-    player.name =
-        name;
-
-
-    localStorage.setItem(
-        "systemPlayerName",
-        name
-    );
-
-
-    savePlayer();
-
-    startGlitch(1200);
-
-
-    setTimeout(() => {
-
-        showApp();
-
-    }, 500);
-
-}
-
-
-/* =========================
-   RANK
-========================= */
-
-function updateRank() {
-
-    if (player.level >= 50) {
-
-        player.rank = "S";
-
-    } else if (player.level >= 40) {
-
-        player.rank = "A";
-
-    } else if (player.level >= 30) {
-
-        player.rank = "B";
-
-    } else if (player.level >= 20) {
-
-        player.rank = "C";
-
-    } else if (player.level >= 10) {
-
-        player.rank = "D";
-
-    } else {
-
-        player.rank = "E";
-
-    }
-
-}
-
-
-/* =========================
-   XP
-========================= */
-
-function addXP(amount) {
-
-    player.xp += amount;
-
-
-    while (
-        player.xp >= 100
-    ) {
-
-        player.xp -= 100;
-
-        player.level++;
-
-    }
-
-
-    updateRank();
-
-    savePlayer();
-
-    updateUI();
-
-
-    const message =
-        document.getElementById(
-            "systemMessage"
-        );
-
-    message.textContent =
-        "+" + amount + " XP";
-
-}
-
-
-/* =========================
-   XP BUTTON
-========================= */
-
-document
-    .getElementById("xpButton")
-    .addEventListener(
-        "click",
-        () => {
-
-            addXP(25);
-
-        }
-    );
-
-
-/* =========================
-   ADD STAT POINTS
-========================= */
-
-document
-    .getElementById(
-        "addPointsButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            const input =
-                document.getElementById(
-                    "pointsInput"
-                );
-
-            const amount =
-                parseInt(
-                    input.value
-                );
-
-
-            if (
-                !amount ||
-                amount <= 0
-            ) {
-
-                return;
-
-            }
-
-
-            player.statPoints +=
-                amount;
-
-
-            input.value = "";
-
-            savePlayer();
-
-            updateUI();
-
-        }
-    );
-
-
-/* =========================
-   STAT BUTTONS
-========================= */
-
-document
-    .querySelectorAll(
-        ".statButton"
-    )
-    .forEach(button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                const stat =
-                    button.dataset.stat;
-
-
-                if (
-                    player.statPoints <= 0
-                ) {
-
-                    return;
-
-                }
-
-
-                player.stats[stat]++;
-
-                player.statPoints--;
-
-                savePlayer();
-
-                updateUI();
-
-            }
-        );
-
-    });
-
-
-/* =========================
-   UPDATE UI
-========================= */
-
-function updateUI() {
-
-    document.getElementById(
-        "playerName"
-    ).textContent =
-        player.name || "PLAYER";
-
-
-    document.getElementById(
-        "levelValue"
-    ).textContent =
-        player.level;
-
-
-    document.getElementById(
-        "rankValue"
-    ).textContent =
-        player.rank;
-
-
-    document.getElementById(
-        "coinsValue"
-    ).textContent =
-        player.coins;
-
-
-    document.getElementById(
-        "xpText"
-    ).textContent =
-        player.xp + " / 100";
-
-
-    document.getElementById(
-        "xpFill"
-    ).style.width =
-        player.xp + "%";
-
-
-    document.getElementById(
-        "statPointsValue"
-    ).textContent =
-        player.statPoints;
-
-
-    document.getElementById(
-        "strengthValue"
-    ).textContent =
-        player.stats.strength;
-
-
-    document.getElementById(
-        "agilityValue"
-    ).textContent =
-        player.stats.agility;
-
-
-    document.getElementById(
-        "vitalityValue"
-    ).textContent =
-        player.stats.vitality;
-
-
-    document.getElementById(
-        "intelligenceValue"
-    ).textContent =
-        player.stats.intelligence;
-
-}
-
-
-/* =========================
-   NAVIGATION
-========================= */
-
-const statusButton =
-    document.getElementById(
-        "statusButton"
-    );
-
-const questsButton =
-    document.getElementById(
-        "questsButton"
-    );
-
-const rewardsButton =
-    document.getElementById(
-        "rewardsButton"
-    );
-
-const questsPanel =
-    document.getElementById(
-        "questsPanel"
-    );
-
-const rewardsPanel =
-    document.getElementById(
-        "rewardsPanel"
-    );
-
-
-statusButton.addEventListener(
-    "click",
-    () => {
-
-        setActive(statusButton);
-
-        questsPanel.style.display =
-            "none";
-
-        rewardsPanel.style.display =
-            "none";
-
-    }
-);
-
-
-questsButton.addEventListener(
-    "click",
-    () => {
-
-        setActive(questsButton);
-
-        questsPanel.style.display =
-            "block";
-
-        rewardsPanel.style.display =
-            "none";
-
-        questsPanel.scrollIntoView({
-            behavior: "smooth"
-        });
-
-    }
-);
-
-
-rewardsButton.addEventListener(
-    "click",
-    () => {
-
-        setActive(rewardsButton);
-
-        questsPanel.style.display =
-            "none";
-
-        rewardsPanel.style.display =
-            "block";
-
-        rewardsPanel.scrollIntoView({
-            behavior: "smooth"
-        });
-
-    }
-);
-
-
-function setActive(button) {
-
-    document
-        .querySelectorAll(
-            ".navButton"
-        )
-        .forEach(btn => {
-
-            btn.classList.remove(
-                "active"
-            );
-
-        });
-
-
-    button.classList.add(
-        "active"
-    );
-
-}
-
-
-/* =========================
-   INITIAL UPDATE
-========================= */
-
-updateRank();
-
-updateUI();
-
-</script>
 
 </body>
 </html>
