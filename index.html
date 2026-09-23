@@ -290,6 +290,34 @@ body::before {
     color: #8eeaff;
 }
 
+/* POINT INPUT */
+
+.point-input {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.point-input input {
+    width: 160px;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid #008cff;
+    outline: none;
+    background: rgba(0,80,150,.15);
+    color: white;
+    font-size: 15px;
+}
+
+.point-input input::placeholder {
+    color: #7da8c4;
+}
+
+.point-input input:focus {
+    border-color: #00d9ff;
+    box-shadow: 0 0 15px rgba(0,180,255,.25);
+}
+
 /* QUESTS */
 
 .quest {
@@ -348,6 +376,7 @@ body.rtl .main {
 /* MOBILE */
 
 @media(max-width:850px) {
+
     .sidebar {
         width: 180px;
     }
@@ -368,6 +397,7 @@ body.rtl .main {
 }
 
 @media(max-width:600px) {
+
     .sidebar {
         position: relative;
         width: 100%;
@@ -392,6 +422,14 @@ body.rtl .main {
     .stats {
         grid-template-columns: 1fr 1fr;
     }
+
+    .point-input {
+        width: 100%;
+    }
+
+    .point-input input {
+        width: 50%;
+    }
 }
 </style>
 </head>
@@ -401,76 +439,167 @@ body.rtl .main {
 <div class="app">
 
     <aside class="sidebar">
+
         <div class="logo">SYSTEM</div>
 
-        <button class="nav-btn active" id="statusBtn">STATUS</button>
-        <button class="nav-btn" id="questsBtn">QUESTS</button>
-        <button class="nav-btn" id="rewardsBtn">REWARDS</button>
+        <button class="nav-btn active" id="statusBtn">
+            STATUS
+        </button>
+
+        <button class="nav-btn" id="questsBtn">
+            QUESTS
+        </button>
+
+        <button class="nav-btn" id="rewardsBtn">
+            REWARDS
+        </button>
 
         <div class="language">
-            <button id="languageBtn">العربية</button>
+            <button id="languageBtn">
+                العربية
+            </button>
         </div>
+
     </aside>
 
     <main class="main">
 
         <div class="top">
-            <div class="system-title" id="title">SYSTEM</div>
-            <div class="system-status" id="onlineText">● SYSTEM ONLINE</div>
+
+            <div class="system-title" id="title">
+                SYSTEM
+            </div>
+
+            <div class="system-status" id="onlineText">
+                ● SYSTEM ONLINE
+            </div>
+
         </div>
 
         <div class="player-card">
 
             <div class="player-header">
+
                 <div>
-                    <div class="player-name" id="playerLabel">PLAYER</div>
-                    <div style="color:#7195aa;margin-top:5px;">
-                        <span id="levelLabel">LEVEL</span>
-                        <span id="level">1</span>
+
+                    <div class="player-name" id="playerLabel">
+                        PLAYER
                     </div>
+
+                    <div style="color:#7195aa;margin-top:5px;">
+
+                        <span id="levelLabel">
+                            LEVEL
+                        </span>
+
+                        <span id="level">
+                            1
+                        </span>
+
+                    </div>
+
                 </div>
 
                 <div class="rank">
-                    <span id="rankLabel">RANK</span>
-                    <span id="rank">E</span>
+
+                    <span id="rankLabel">
+                        RANK
+                    </span>
+
+                    <span id="rank">
+                        E
+                    </span>
+
                 </div>
+
             </div>
 
             <div class="info-grid">
 
                 <div class="info">
-                    <small id="xpLabel">XP</small>
-                    <strong id="xp">0 / 100</strong>
+
+                    <small id="xpLabel">
+                        XP
+                    </small>
+
+                    <strong id="xp">
+                        0 / 100
+                    </strong>
+
                 </div>
 
                 <div class="info">
-                    <small id="coinsLabel">COINS</small>
-                    <strong id="coins">0</strong>
+
+                    <small id="coinsLabel">
+                        COINS
+                    </small>
+
+                    <strong id="coins">
+                        0
+                    </strong>
+
                 </div>
 
                 <div class="info">
-                    <small id="pointsLabel">STAT POINTS</small>
-                    <strong id="statPoints">0</strong>
+
+                    <small id="pointsLabel">
+                        STAT POINTS
+                    </small>
+
+                    <strong id="statPoints">
+                        0
+                    </strong>
+
                 </div>
 
             </div>
 
             <div class="xp-box">
+
                 <div class="xp-text">
-                    <span id="progressLabel">XP PROGRESS</span>
-                    <span id="xpPercent">0%</span>
+
+                    <span id="progressLabel">
+                        XP PROGRESS
+                    </span>
+
+                    <span id="xpPercent">
+                        0%
+                    </span>
+
                 </div>
 
                 <div class="xp-bar">
+
                     <div class="xp-fill" id="xpFill"></div>
+
                 </div>
+
             </div>
 
             <div class="action-row">
-                <button class="action" id="xpButton">+25 XP</button>
-                <button class="action add-points" id="addPointsButton">
-                    +5 STAT POINTS
+
+                <button class="action" id="xpButton">
+                    +25 XP
                 </button>
+
+                <div class="point-input">
+
+                    <input
+                        type="number"
+                        id="pointsInput"
+                        min="1"
+                        placeholder="STAT POINTS"
+                    >
+
+                    <button
+                        class="action add-points"
+                        id="addPointsButton"
+                    >
+                        ADD POINTS
+                    </button>
+
+                </div>
+
             </div>
 
             <div class="message" id="message">
@@ -481,32 +610,111 @@ body.rtl .main {
 
         <!-- STATUS -->
 
-        <section class="section active" id="statusSection">
+        <section
+            class="section active"
+            id="statusSection"
+        >
 
             <div class="stats">
 
                 <div class="stat">
-                    <div class="stat-name" id="strengthName">STRENGTH</div>
-                    <div class="stat-value" id="strength">10</div>
-                    <button class="plus" id="strengthPlus">+</button>
+
+                    <div
+                        class="stat-name"
+                        id="strengthName"
+                    >
+                        STRENGTH
+                    </div>
+
+                    <div
+                        class="stat-value"
+                        id="strength"
+                    >
+                        10
+                    </div>
+
+                    <button
+                        class="plus"
+                        id="strengthPlus"
+                    >
+                        +
+                    </button>
+
                 </div>
 
                 <div class="stat">
-                    <div class="stat-name" id="agilityName">AGILITY</div>
-                    <div class="stat-value" id="agility">10</div>
-                    <button class="plus" id="agilityPlus">+</button>
+
+                    <div
+                        class="stat-name"
+                        id="agilityName"
+                    >
+                        AGILITY
+                    </div>
+
+                    <div
+                        class="stat-value"
+                        id="agility"
+                    >
+                        10
+                    </div>
+
+                    <button
+                        class="plus"
+                        id="agilityPlus"
+                    >
+                        +
+                    </button>
+
                 </div>
 
                 <div class="stat">
-                    <div class="stat-name" id="vitalityName">VITALITY</div>
-                    <div class="stat-value" id="vitality">10</div>
-                    <button class="plus" id="vitalityPlus">+</button>
+
+                    <div
+                        class="stat-name"
+                        id="vitalityName"
+                    >
+                        VITALITY
+                    </div>
+
+                    <div
+                        class="stat-value"
+                        id="vitality"
+                    >
+                        10
+                    </div>
+
+                    <button
+                        class="plus"
+                        id="vitalityPlus"
+                    >
+                        +
+                    </button>
+
                 </div>
 
                 <div class="stat">
-                    <div class="stat-name" id="intelligenceName">INTELLIGENCE</div>
-                    <div class="stat-value" id="intelligence">10</div>
-                    <button class="plus" id="intelligencePlus">+</button>
+
+                    <div
+                        class="stat-name"
+                        id="intelligenceName"
+                    >
+                        INTELLIGENCE
+                    </div>
+
+                    <div
+                        class="stat-value"
+                        id="intelligence"
+                    >
+                        10
+                    </div>
+
+                    <button
+                        class="plus"
+                        id="intelligencePlus"
+                    >
+                        +
+                    </button>
+
                 </div>
 
             </div>
@@ -515,60 +723,124 @@ body.rtl .main {
 
         <!-- QUESTS -->
 
-        <section class="section" id="questsSection">
+        <section
+            class="section"
+            id="questsSection"
+        >
 
             <div class="quest">
-                <h3 id="quest1Title">Daily Training</h3>
-                <p id="quest1Text">Complete your daily training.</p>
-                <button class="action" id="quest1Button">COMPLETE QUEST</button>
+
+                <h3 id="quest1Title">
+                    Daily Training
+                </h3>
+
+                <p id="quest1Text">
+                    Complete your daily training.
+                </p>
+
+                <button
+                    class="action"
+                    id="quest1Button"
+                >
+                    COMPLETE QUEST
+                </button>
+
             </div>
 
             <div class="quest">
-                <h3 id="quest2Title">Gain Experience</h3>
-                <p id="quest2Text">Gain 100 XP.</p>
-                <button class="action" id="quest2Button">COMPLETE QUEST</button>
+
+                <h3 id="quest2Title">
+                    Gain Experience
+                </h3>
+
+                <p id="quest2Text">
+                    Gain 100 XP.
+                </p>
+
+                <button
+                    class="action"
+                    id="quest2Button"
+                >
+                    COMPLETE QUEST
+                </button>
+
             </div>
 
             <div class="quest">
-                <h3 id="quest3Title">Power Up</h3>
-                <p id="quest3Text">Increase one of your stats.</p>
-                <button class="action" id="quest3Button">COMPLETE QUEST</button>
+
+                <h3 id="quest3Title">
+                    Power Up
+                </h3>
+
+                <p id="quest3Text">
+                    Increase one of your stats.
+                </p>
+
+                <button
+                    class="action"
+                    id="quest3Button"
+                >
+                    COMPLETE QUEST
+                </button>
+
             </div>
 
         </section>
 
         <!-- REWARDS -->
 
-        <section class="section" id="rewardsSection">
+        <section
+            class="section"
+            id="rewardsSection"
+        >
 
             <div class="reward">
-                🪙 <strong id="reward1">Daily Reward — 25 Coins</strong>
+                🪙
+                <strong id="reward1">
+                    Daily Reward — 25 Coins
+                </strong>
             </div>
 
             <div class="reward">
-                ⚡ <strong id="reward2">XP Boost — +50 XP</strong>
+                ⚡
+                <strong id="reward2">
+                    XP Boost — +50 XP
+                </strong>
             </div>
 
             <div class="reward">
-                ⭐ <strong id="reward3">System Reward — Mystery</strong>
+                ⭐
+                <strong id="reward3">
+                    System Reward — Mystery
+                </strong>
             </div>
 
         </section>
 
     </main>
+
 </div>
 
 <script>
 
+/* =========================
+   PLAYER DATA
+========================= */
+
 let player =
-    JSON.parse(localStorage.getItem("systemPlayer")) || {
+    JSON.parse(
+        localStorage.getItem("systemPlayer")
+    ) || {
+
         level: 1,
         xp: 35,
         coins: 0,
+
         strength: 10,
         agility: 10,
         vitality: 10,
         intelligence: 10,
+
         statPoints: 0
     };
 
@@ -576,35 +848,77 @@ if (typeof player.statPoints !== "number") {
     player.statPoints = 0;
 }
 
+
+/* =========================
+   QUEST DATA
+========================= */
+
 let quests =
-    JSON.parse(localStorage.getItem("systemQuests")) || {
+    JSON.parse(
+        localStorage.getItem("systemQuests")
+    ) || {
+
         quest1: false,
         quest2: false,
         quest3: false
     };
 
+
+/* =========================
+   LANGUAGE
+========================= */
+
 let language =
     localStorage.getItem("systemLanguage") || "en";
 
+
+/* =========================
+   SAVE
+========================= */
+
 function save() {
-    localStorage.setItem("systemPlayer", JSON.stringify(player));
-    localStorage.setItem("systemQuests", JSON.stringify(quests));
+
+    localStorage.setItem(
+        "systemPlayer",
+        JSON.stringify(player)
+    );
+
+    localStorage.setItem(
+        "systemQuests",
+        JSON.stringify(quests)
+    );
 }
+
+
+/* =========================
+   RANK
+========================= */
 
 function getRank() {
 
     if (player.level >= 50) return "S";
+
     if (player.level >= 35) return "A";
+
     if (player.level >= 25) return "B";
+
     if (player.level >= 15) return "C";
+
     if (player.level >= 5) return "D";
 
     return "E";
 }
 
+
+/* =========================
+   UPDATE UI
+========================= */
+
 function updateUI() {
 
-    document.getElementById("level").textContent = player.level;
+    document.getElementById("level").textContent =
+        player.level;
+
     document.getElementById("xp").textContent =
         player.xp + " / 100";
 
@@ -629,6 +943,7 @@ function updateUI() {
     document.getElementById("intelligence").textContent =
         player.intelligence;
 
+
     let percent = player.xp;
 
     document.getElementById("xpFill").style.width =
@@ -637,9 +952,16 @@ function updateUI() {
     document.getElementById("xpPercent").textContent =
         percent + "%";
 
+
     updatePlusButtons();
+
     save();
 }
+
+
+/* =========================
+   ADD XP
+========================= */
 
 function addXP(amount) {
 
@@ -650,11 +972,14 @@ function addXP(amount) {
     while (player.xp >= 100) {
 
         player.xp -= 100;
+
         player.level++;
+
         player.coins += 25;
 
         levelUp = true;
     }
+
 
     if (language === "ar") {
 
@@ -671,20 +996,53 @@ function addXP(amount) {
             : "⚡ " + amount + " XP added.";
     }
 
+
     updateUI();
 }
+
+
+/* =========================
+   ADD CUSTOM STAT POINTS
+========================= */
 
 function addStatPoints() {
 
-    player.statPoints += 5;
+    const input =
+        document.getElementById("pointsInput");
+
+    const amount =
+        Number(input.value);
+
+
+    if (!Number.isInteger(amount) || amount <= 0) {
+
+        document.getElementById("message").textContent =
+            language === "ar"
+            ? "❌ اكتب رقمًا صحيحًا أكبر من صفر."
+            : "❌ Enter a valid number greater than zero.";
+
+        return;
+    }
+
+
+    player.statPoints += amount;
+
 
     document.getElementById("message").textContent =
         language === "ar"
-        ? "⭐ تمت إضافة 5 نقاط إحصائيات."
-        : "⭐ 5 stat points added.";
+        ? "⭐ تمت إضافة " + amount + " نقطة إحصائيات."
+        : "⭐ " + amount + " stat points added.";
+
+
+    input.value = "";
 
     updateUI();
 }
+
+
+/* =========================
+   SPEND STAT
+========================= */
 
 function spendStat(statName) {
 
@@ -698,269 +1056,652 @@ function spendStat(statName) {
         return;
     }
 
+
     player[statName]++;
+
     player.statPoints--;
+
 
     document.getElementById("message").textContent =
         language === "ar"
         ? "⬆️ تم تطوير الإحصائية."
         : "⬆️ Stat upgraded.";
 
+
     updateUI();
 }
 
+
+/* =========================
+   PLUS BUTTONS
+========================= */
+
 function updatePlusButtons() {
 
-    let disabled = player.statPoints <= 0;
+    let disabled =
+        player.statPoints <= 0;
 
-    document.getElementById("strengthPlus").disabled = disabled;
-    document.getElementById("agilityPlus").disabled = disabled;
-    document.getElementById("vitalityPlus").disabled = disabled;
-    document.getElementById("intelligencePlus").disabled = disabled;
+
+    document.getElementById(
+        "strengthPlus"
+    ).disabled = disabled;
+
+    document.getElementById(
+        "agilityPlus"
+    ).disabled = disabled;
+
+    document.getElementById(
+        "vitalityPlus"
+    ).disabled = disabled;
+
+    document.getElementById(
+        "intelligencePlus"
+    ).disabled = disabled;
 }
+
+
+/* =========================
+   SECTIONS
+========================= */
 
 function showSection(section) {
 
-    document.querySelectorAll(".section").forEach(s => {
-        s.classList.remove("active");
-    });
+    document
+        .querySelectorAll(".section")
+        .forEach(sectionElement => {
 
-    document.querySelectorAll(".nav-btn").forEach(b => {
-        b.classList.remove("active");
-    });
+            sectionElement.classList.remove(
+                "active"
+            );
 
-    document.getElementById(section + "Section")
+        });
+
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(button => {
+
+            button.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    document
+        .getElementById(
+            section + "Section"
+        )
         .classList.add("active");
 
-    document.getElementById(section + "Btn")
+
+    document
+        .getElementById(
+            section + "Btn"
+        )
         .classList.add("active");
 }
 
-/* BUTTONS */
 
-document.getElementById("statusBtn").onclick =
-    () => showSection("status");
+/* =========================
+   BUTTONS
+========================= */
 
-document.getElementById("questsBtn").onclick =
-    () => showSection("quests");
+document.getElementById(
+    "statusBtn"
+).onclick = () => {
 
-document.getElementById("rewardsBtn").onclick =
-    () => showSection("rewards");
+    showSection("status");
 
-document.getElementById("xpButton").onclick =
-    () => addXP(25);
+};
 
-document.getElementById("addPointsButton").onclick =
-    addStatPoints;
 
-document.getElementById("strengthPlus").onclick =
-    () => spendStat("strength");
+document.getElementById(
+    "questsBtn"
+).onclick = () => {
 
-document.getElementById("agilityPlus").onclick =
-    () => spendStat("agility");
+    showSection("quests");
 
-document.getElementById("vitalityPlus").onclick =
-    () => spendStat("vitality");
+};
 
-document.getElementById("intelligencePlus").onclick =
-    () => spendStat("intelligence");
 
-/* QUESTS */
+document.getElementById(
+    "rewardsBtn"
+).onclick = () => {
 
-document.getElementById("quest1Button").onclick =
-    function() {
+    showSection("rewards");
 
-        if (quests.quest1) return;
+};
 
-        quests.quest1 = true;
-        player.coins += 25;
-        addXP(25);
 
-        this.textContent =
-            language === "ar"
-            ? "تم الإنجاز ✓"
-            : "COMPLETED ✓";
+document.getElementById(
+    "xpButton"
+).onclick = () => {
 
-        save();
-    };
+    addXP(25);
 
-document.getElementById("quest2Button").onclick =
-    function() {
+};
 
-        if (quests.quest2) return;
 
-        quests.quest2 = true;
-        addXP(100);
+document.getElementById(
+    "addPointsButton"
+).onclick = () => {
 
-        this.textContent =
-            language === "ar"
-            ? "تم الإنجاز ✓"
-            : "COMPLETED ✓";
+    addStatPoints();
 
-        save();
-    };
+};
 
-document.getElementById("quest3Button").onclick =
-    function() {
 
-        if (quests.quest3) return;
+document.getElementById(
+    "strengthPlus"
+).onclick = () => {
 
-        quests.quest3 = true;
+    spendStat("strength");
 
-        addStatPoints();
+};
 
-        this.textContent =
-            language === "ar"
-            ? "تم الإنجاز ✓"
-            : "COMPLETED ✓";
 
-        save();
-    };
+document.getElementById(
+    "agilityPlus"
+).onclick = () => {
 
-/* LANGUAGE */
+    spendStat("agility");
+
+};
+
+
+document.getElementById(
+    "vitalityPlus"
+).onclick = () => {
+
+    spendStat("vitality");
+
+};
+
+
+document.getElementById(
+    "intelligencePlus"
+).onclick = () => {
+
+    spendStat("intelligence");
+
+};
+
+
+/* =========================
+   ENTER KEY
+========================= */
+
+document.getElementById(
+    "pointsInput"
+).addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            addStatPoints();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   QUEST 1
+========================= */
+
+document.getElementById(
+    "quest1Button"
+).onclick = function() {
+
+    if (quests.quest1) return;
+
+
+    quests.quest1 = true;
+
+    player.coins += 25;
+
+    addXP(25);
+
+
+    this.textContent =
+        language === "ar"
+        ? "تم الإنجاز ✓"
+        : "COMPLETED ✓";
+
+
+    save();
+};
+
+
+/* =========================
+   QUEST 2
+========================= */
+
+document.getElementById(
+    "quest2Button"
+).onclick = function() {
+
+    if (quests.quest2) return;
+
+
+    quests.quest2 = true;
+
+    addXP(100);
+
+
+    this.textContent =
+        language === "ar"
+        ? "تم الإنجاز ✓"
+        : "COMPLETED ✓";
+
+
+    save();
+};
+
+
+/* =========================
+   QUEST 3
+========================= */
+
+document.getElementById(
+    "quest3Button"
+).onclick = function() {
+
+    if (quests.quest3) return;
+
+
+    quests.quest3 = true;
+
+    addStatPointsFromQuest(1);
+
+
+    this.textContent =
+        language === "ar"
+        ? "تم الإنجاز ✓"
+        : "COMPLETED ✓";
+
+
+    save();
+};
+
+
+/* =========================
+   QUEST STAT POINT
+========================= */
+
+function addStatPointsFromQuest(amount) {
+
+    player.statPoints += amount;
+
+    document.getElementById(
+        "message"
+    ).textContent =
+        language === "ar"
+        ? "⭐ حصلت على " + amount + " نقطة إحصائيات من المهمة."
+        : "⭐ You received " + amount + " stat point from the quest.";
+
+    updateUI();
+}
+
+
+/* =========================
+   TRANSLATIONS
+========================= */
 
 const translations = {
 
     en: {
+
         title: "SYSTEM",
         player: "PLAYER",
         level: "LEVEL",
         rank: "RANK",
+
         xp: "XP",
         coins: "COINS",
         points: "STAT POINTS",
+
         progress: "XP PROGRESS",
+
         status: "STATUS",
         quests: "QUESTS",
         rewards: "REWARDS",
+
         online: "● SYSTEM ONLINE",
+
         strength: "STRENGTH",
         agility: "AGILITY",
         vitality: "VITALITY",
         intelligence: "INTELLIGENCE",
+
         quest1: "Daily Training",
-        quest1Text: "Complete your daily training.",
+        quest1Text:
+            "Complete your daily training.",
+
         quest2: "Gain Experience",
-        quest2Text: "Gain 100 XP.",
+        quest2Text:
+            "Gain 100 XP.",
+
         quest3: "Power Up",
-        quest3Text: "Increase one of your stats.",
+        quest3Text:
+            "Increase one of your stats.",
+
         complete: "COMPLETE QUEST",
-        reward1: "Daily Reward — 25 Coins",
-        reward2: "XP Boost — +50 XP",
-        reward3: "System Reward — Mystery",
-        language: "العربية"
+
+        reward1:
+            "Daily Reward — 25 Coins",
+
+        reward2:
+            "XP Boost — +50 XP",
+
+        reward3:
+            "System Reward — Mystery",
+
+        language: "العربية",
+
+        placeholder:
+            "STAT POINTS",
+
+        addPoints:
+            "ADD POINTS"
+
     },
 
+
     ar: {
+
         title: "النظام",
         player: "اللاعب",
         level: "المستوى",
         rank: "الرتبة",
+
         xp: "الخبرة",
         coins: "العملات",
         points: "نقاط الإحصائيات",
+
         progress: "تقدم الخبرة",
+
         status: "الحالة",
         quests: "المهام",
         rewards: "المكافآت",
+
         online: "● النظام يعمل",
+
         strength: "القوة",
         agility: "الرشاقة",
         vitality: "الحيوية",
         intelligence: "الذكاء",
+
         quest1: "التدريب اليومي",
-        quest1Text: "أكمل تدريبك اليومي.",
+        quest1Text:
+            "أكمل تدريبك اليومي.",
+
         quest2: "اكتساب الخبرة",
-        quest2Text: "احصل على 100 نقطة خبرة.",
+        quest2Text:
+            "احصل على 100 نقطة خبرة.",
+
         quest3: "تطوير القوة",
-        quest3Text: "قم بتطوير إحدى إحصائياتك.",
+        quest3Text:
+            "قم بتطوير إحدى إحصائياتك.",
+
         complete: "إكمال المهمة",
-        reward1: "المكافأة اليومية — 25 عملة",
-        reward2: "زيادة الخبرة — +50 خبرة",
-        reward3: "مكافأة النظام — مفاجأة",
-        language: "English"
+
+        reward1:
+            "المكافأة اليومية — 25 عملة",
+
+        reward2:
+            "زيادة الخبرة — +50 خبرة",
+
+        reward3:
+            "مكافأة النظام — مفاجأة",
+
+        language: "English",
+
+        placeholder:
+            "نقاط الإحصائيات",
+
+        addPoints:
+            "إضافة النقاط"
+
     }
 };
 
+
+/* =========================
+   APPLY LANGUAGE
+========================= */
+
 function applyLanguage() {
 
-    let t = translations[language];
+    let t =
+        translations[language];
 
-    document.documentElement.lang = language;
+
+    document.documentElement.lang =
+        language;
+
 
     if (language === "ar") {
-        document.body.classList.add("rtl");
-        document.documentElement.dir = "rtl";
+
+        document.body.classList.add(
+            "rtl"
+        );
+
+        document.documentElement.dir =
+            "rtl";
+
     } else {
-        document.body.classList.remove("rtl");
-        document.documentElement.dir = "ltr";
+
+        document.body.classList.remove(
+            "rtl"
+        );
+
+        document.documentElement.dir =
+            "ltr";
     }
 
-    document.getElementById("title").textContent = t.title;
-    document.getElementById("playerLabel").textContent = t.player;
-    document.getElementById("levelLabel").textContent = t.level;
-    document.getElementById("rankLabel").textContent = t.rank;
-    document.getElementById("xpLabel").textContent = t.xp;
-    document.getElementById("coinsLabel").textContent = t.coins;
-    document.getElementById("pointsLabel").textContent = t.points;
-    document.getElementById("progressLabel").textContent = t.progress;
 
-    document.getElementById("statusBtn").textContent = t.status;
-    document.getElementById("questsBtn").textContent = t.quests;
-    document.getElementById("rewardsBtn").textContent = t.rewards;
+    document.getElementById(
+        "title"
+    ).textContent = t.title;
 
-    document.getElementById("onlineText").textContent = t.online;
 
-    document.getElementById("strengthName").textContent = t.strength;
-    document.getElementById("agilityName").textContent = t.agility;
-    document.getElementById("vitalityName").textContent = t.vitality;
-    document.getElementById("intelligenceName").textContent = t.intelligence;
+    document.getElementById(
+        "playerLabel"
+    ).textContent = t.player;
 
-    document.getElementById("quest1Title").textContent = t.quest1;
-    document.getElementById("quest1Text").textContent = t.quest1Text;
 
-    document.getElementById("quest2Title").textContent = t.quest2;
-    document.getElementById("quest2Text").textContent = t.quest2Text;
+    document.getElementById(
+        "levelLabel"
+    ).textContent = t.level;
 
-    document.getElementById("quest3Title").textContent = t.quest3;
-    document.getElementById("quest3Text").textContent = t.quest3Text;
 
-    document.getElementById("reward1").textContent = t.reward1;
-    document.getElementById("reward2").textContent = t.reward2;
-    document.getElementById("reward3").textContent = t.reward3;
+    document.getElementById(
+        "rankLabel"
+    ).textContent = t.rank;
 
-    document.getElementById("languageBtn").textContent = t.language;
 
-    document.getElementById("xpButton").textContent =
-        language === "ar" ? "+25 خبرة" : "+25 XP";
+    document.getElementById(
+        "xpLabel"
+    ).textContent = t.xp;
 
-    document.getElementById("addPointsButton").textContent =
+
+    document.getElementById(
+        "coinsLabel"
+    ).textContent = t.coins;
+
+
+    document.getElementById(
+        "pointsLabel"
+    ).textContent = t.points;
+
+
+    document.getElementById(
+        "progressLabel"
+    ).textContent = t.progress;
+
+
+    document.getElementById(
+        "statusBtn"
+    ).textContent = t.status;
+
+
+    document.getElementById(
+        "questsBtn"
+    ).textContent = t.quests;
+
+
+    document.getElementById(
+        "rewardsBtn"
+    ).textContent = t.rewards;
+
+
+    document.getElementById(
+        "onlineText"
+    ).textContent = t.online;
+
+
+    document.getElementById(
+        "strengthName"
+    ).textContent = t.strength;
+
+
+    document.getElementById(
+        "agilityName"
+    ).textContent = t.agility;
+
+
+    document.getElementById(
+        "vitalityName"
+    ).textContent = t.vitality;
+
+
+    document.getElementById(
+        "intelligenceName"
+    ).textContent = t.intelligence;
+
+
+    document.getElementById(
+        "quest1Title"
+    ).textContent = t.quest1;
+
+
+    document.getElementById(
+        "quest1Text"
+    ).textContent = t.quest1Text;
+
+
+    document.getElementById(
+        "quest2Title"
+    ).textContent = t.quest2;
+
+
+    document.getElementById(
+        "quest2Text"
+    ).textContent = t.quest2Text;
+
+
+    document.getElementById(
+        "quest3Title"
+    ).textContent = t.quest3;
+
+
+    document.getElementById(
+        "quest3Text"
+    ).textContent = t.quest3Text;
+
+
+    document.getElementById(
+        "reward1"
+    ).textContent = t.reward1;
+
+
+    document.getElementById(
+        "reward2"
+    ).textContent = t.reward2;
+
+
+    document.getElementById(
+        "reward3"
+    ).textContent = t.reward3;
+
+
+    document.getElementById(
+        "languageBtn"
+    ).textContent = t.language;
+
+
+    document.getElementById(
+        "xpButton"
+    ).textContent =
         language === "ar"
-        ? "+5 نقاط إحصائيات"
-        : "+5 STAT POINTS";
+        ? "+25 خبرة"
+        : "+25 XP";
 
-    document.querySelectorAll(".quest button").forEach((button) => {
 
-        if (button.textContent.includes("✓")) return;
+    document.getElementById(
+        "pointsInput"
+    ).placeholder =
+        t.placeholder;
 
-        button.textContent = t.complete;
+
+    document.getElementById(
+        "addPointsButton"
+    ).textContent =
+        t.addPoints;
+
+
+    document.querySelectorAll(
+        ".quest button"
+    ).forEach(button => {
+
+        if (
+            button.textContent.includes("✓")
+        ) {
+            return;
+        }
+
+        button.textContent =
+            t.complete;
+
     });
 }
 
-document.getElementById("languageBtn").onclick =
-    function() {
 
-        language = language === "en" ? "ar" : "en";
+/* =========================
+   LANGUAGE BUTTON
+========================= */
 
-        localStorage.setItem(
-            "systemLanguage",
-            language
-        );
+document.getElementById(
+    "languageBtn"
+).onclick = function() {
 
-        applyLanguage();
-    };
+    language =
+        language === "en"
+        ? "ar"
+        : "en";
+
+
+    localStorage.setItem(
+        "systemLanguage",
+        language
+    );
+
+
+    applyLanguage();
+
+};
+
+
+/* =========================
+   START
+========================= */
 
 applyLanguage();
+
 updateUI();
 
 </script>
