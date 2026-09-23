@@ -1,1976 +1,967 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>System</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            background:
-                radial-gradient(
-                    circle at center,
-                    #071b35 0%,
-                    #020711 55%,
-                    #00030a 100%
-                );
-            color: white;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            overflow: hidden;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-
-            width: 550px;
-            height: 550px;
-
-            background: #008cff;
-            filter: blur(180px);
-            opacity: 0.17;
-
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .system {
-            width: 92%;
-            max-width: 680px;
-            max-height: 94vh;
-
-            overflow-y: auto;
-
-            padding: 30px;
-
-            background:
-                rgba(0, 110, 255, 0.08);
-
-            border:
-                1px solid rgba(0, 160, 255, 0.65);
-
-            border-radius: 20px;
-
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-
-            box-shadow:
-                0 0 20px rgba(0, 140, 255, 0.25),
-                0 0 60px rgba(0, 100, 255, 0.12);
-        }
-
-        .title {
-            text-align: center;
-
-            font-size: 31px;
-
-            letter-spacing: 5px;
-
-            color: #69c7ff;
-
-            text-shadow:
-                0 0 10px #008cff,
-                0 0 25px #006eff;
-
-            margin-bottom: 28px;
-        }
-
-        .player {
-            padding: 20px;
-
-            background:
-                rgba(0, 120, 255, 0.07);
-
-            border:
-                1px solid rgba(0, 153, 255, 0.3);
-
-            border-radius: 15px;
-        }
-
-        .player-name {
-            font-size: 20px;
-            color: #8ed7ff;
-            margin-bottom: 18px;
-        }
-
-        .info {
-            display: flex;
-            justify-content: space-between;
-
-            padding: 10px 0;
-
-            border-bottom:
-                1px solid rgba(0, 153, 255, 0.12);
-        }
-
-        .info:last-child {
-            border-bottom: none;
-        }
-
-        .label {
-            color: #8aa7c4;
-        }
-
-        .value {
-            color: white;
-
-            font-weight: bold;
-
-            text-shadow:
-                0 0 8px #008cff;
-        }
-
-        .xp {
-            margin-top: 20px;
-        }
-
-        .xp-top {
-            display: flex;
-            justify-content: space-between;
-
-            margin-bottom: 8px;
-
-            color: #a9c8e5;
-        }
-
-        .xp-bar {
-            width: 100%;
-            height: 11px;
-
-            background:
-                rgba(255, 255, 255, 0.08);
-
-            border:
-                1px solid rgba(0, 153, 255, 0.3);
-
-            border-radius: 20px;
-
-            overflow: hidden;
-        }
-
-        .xp-fill {
-            width: 35%;
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #006eff,
-                    #00bfff
-                );
-
-            box-shadow:
-                0 0 10px #008cff,
-                0 0 20px #008cff;
-
-            transition:
-                width 0.4s ease;
-        }
-
-        .stats {
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 12px;
-
-            margin-top: 20px;
-        }
-
-        .stat {
-            padding: 15px;
-
-            text-align: center;
-
-            background:
-                rgba(0, 120, 255, 0.06);
-
-            border:
-                1px solid rgba(0, 153, 255, 0.25);
-
-            border-radius: 12px;
-
-            transition: 0.25s;
-        }
-
-        .stat:hover {
-            border-color: #008cff;
-
-            box-shadow:
-                0 0 15px rgba(0, 140, 255, 0.3);
-
-            transform:
-                translateY(-2px);
-        }
-
-        .stat-name {
-            color: #7899b8;
-            font-size: 13px;
-        }
-
-        .stat-value {
-            margin-top: 6px;
-
-            font-size: 22px;
-
-            color: #65c8ff;
-
-            text-shadow:
-                0 0 10px #008cff;
-        }
-
-        .buttons {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 10px;
-
-            margin-top: 25px;
-        }
-
-        .system-button {
-            padding: 13px 8px;
-
-            color: #8ed7ff;
-
-            background:
-                rgba(0, 110, 255, 0.08);
-
-            border:
-                1px solid rgba(0, 153, 255, 0.4);
-
-            border-radius: 10px;
-
-            cursor: pointer;
-
-            transition: 0.25s;
-
-            font-size: 14px;
-        }
-
-        .system-button:hover,
-        .system-button.active {
-            color: white;
-
-            background:
-                rgba(0, 130, 255, 0.2);
-
-            border-color: #00aaff;
-
-            box-shadow:
-                0 0 15px rgba(0, 153, 255, 0.45);
-        }
-
-        .xp-button {
-            width: 100%;
-
-            margin-top: 12px;
-
-            padding: 12px;
-
-            background:
-                rgba(0, 140, 255, 0.12);
-
-            border:
-                1px solid rgba(0, 170, 255, 0.45);
-
-            color: #8ed7ff;
-
-            border-radius: 10px;
-
-            cursor: pointer;
-
-            font-size: 14px;
-        }
-
-        .xp-button:hover {
-            background:
-                rgba(0, 140, 255, 0.22);
-
-            box-shadow:
-                0 0 15px rgba(0, 153, 255, 0.3);
-        }
-
-        .panel {
-            display: none;
-
-            margin-top: 20px;
-
-            padding: 20px;
-
-            background:
-                rgba(0, 90, 200, 0.08);
-
-            border:
-                1px solid rgba(0, 160, 255, 0.4);
-
-            border-radius: 15px;
-        }
-
-        .panel.active {
-            display: block;
-        }
-
-        .panel-title {
-            color: #69c7ff;
-
-            font-size: 20px;
-
-            margin-bottom: 15px;
-
-            text-shadow:
-                0 0 10px #008cff;
-        }
-
-        .panel-row {
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            padding: 12px 0;
-
-            border-bottom:
-                1px solid rgba(0, 153, 255, 0.12);
-        }
-
-        .panel-row:last-child {
-            border-bottom: none;
-        }
-
-        .panel-label {
-            color: #8aa7c4;
-        }
-
-        .panel-value {
-            color: #65c8ff;
-
-            font-weight: bold;
-        }
-
-        /* STAT POINTS */
-
-        .points-box {
-            margin-bottom: 18px;
-
-            padding: 15px;
-
-            text-align: center;
-
-            background:
-                rgba(0, 140, 255, 0.1);
-
-            border:
-                1px solid rgba(0, 170, 255, 0.4);
-
-            border-radius: 12px;
-        }
-
-        .points-title {
-            color: #8aa7c4;
-
-            font-size: 13px;
-
-            margin-bottom: 7px;
-        }
-
-        .points-number {
-            color: #65c8ff;
-
-            font-size: 27px;
-
-            font-weight: bold;
-
-            text-shadow:
-                0 0 12px #008cff;
-        }
-
-        .stat-distribute {
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            gap: 10px;
-
-            padding: 12px;
-
-            margin-bottom: 10px;
-
-            background:
-                rgba(0, 120, 255, 0.06);
-
-            border:
-                1px solid rgba(0, 153, 255, 0.2);
-
-            border-radius: 10px;
-        }
-
-        .stat-info {
-            flex: 1;
-        }
-
-        .stat-title {
-            color: white;
-
-            font-size: 14px;
-        }
-
-        .stat-current {
-            color: #65c8ff;
-
-            margin-top: 4px;
-
-            font-size: 13px;
-        }
-
-        .plus-button {
-            width: 42px;
-            height: 42px;
-
-            border-radius: 50%;
-
-            border:
-                1px solid #008cff;
-
-            background:
-                rgba(0, 140, 255, 0.12);
-
-            color: #69c7ff;
-
-            font-size: 22px;
-
-            cursor: pointer;
-
-            transition: 0.2s;
-        }
-
-        .plus-button:hover {
-            background:
-                rgba(0, 140, 255, 0.3);
-
-            color: white;
-
-            box-shadow:
-                0 0 15px #008cff;
-
-            transform:
-                scale(1.05);
-        }
-
-        .plus-button:disabled {
-            opacity: 0.35;
-
-            cursor: not-allowed;
-
-            transform: none;
-
-            box-shadow: none;
-        }
-
-        .quest {
-            padding: 16px;
-
-            margin-bottom: 12px;
-
-            background:
-                rgba(0, 120, 255, 0.07);
-
-            border:
-                1px solid rgba(0, 153, 255, 0.25);
-
-            border-radius: 12px;
-        }
-
-        .quest-name {
-            color: white;
-
-            font-size: 16px;
-
-            margin-bottom: 8px;
-        }
-
-        .quest-description {
-            color: #8aa7c4;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-
-            margin-bottom: 12px;
-        }
-
-        .quest-reward {
-            color: #65c8ff;
-
-            font-size: 13px;
-
-            margin-bottom: 12px;
-        }
-
-        .complete-button {
-            width: 100%;
-
-            padding: 10px;
-
-            border:
-                1px solid rgba(0, 170, 255, 0.45);
-
-            border-radius: 9px;
-
-            background:
-                rgba(0, 140, 255, 0.1);
-
-            color: #8ed7ff;
-
-            cursor: pointer;
-        }
-
-        .complete-button:hover {
-            background:
-                rgba(0, 140, 255, 0.22);
-
-            box-shadow:
-                0 0 15px rgba(0, 153, 255, 0.3);
-        }
-
-        .complete-button.done {
-            color: #4cffaa;
-
-            border-color:
-                rgba(76, 255, 170, 0.3);
-
-            cursor: default;
-        }
-
-        .reward-card {
-            padding: 18px;
-
-            margin-bottom: 12px;
-
-            background:
-                rgba(0, 120, 255, 0.07);
-
-            border:
-                1px solid rgba(0, 153, 255, 0.25);
-
-            border-radius: 12px;
-
-            text-align: center;
-        }
-
-        .reward-icon {
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-
-        .reward-title {
-            color: #69c7ff;
-            margin-bottom: 6px;
-        }
-
-        .reward-text {
-            color: #8aa7c4;
-            font-size: 13px;
-        }
-
-        .system-message {
-            margin-top: 23px;
-
-            padding: 14px;
-
-            text-align: center;
-
-            color: #79d0ff;
-
-            background:
-                rgba(0, 120, 255, 0.06);
-
-            border:
-                1px solid rgba(0, 153, 255, 0.25);
-
-            border-radius: 10px;
-
-            min-height: 45px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            text-shadow:
-                0 0 8px #008cff;
-        }
-
-        @media (max-width: 600px) {
-
-            body {
-                overflow-y: auto;
-
-                padding: 10px 0;
-            }
-
-            .system {
-                width: 94%;
-                max-height: none;
-                padding: 20px;
-            }
-
-            .title {
-                font-size: 25px;
-            }
-
-            .buttons {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(0,140,255,.18), transparent 35%),
+        radial-gradient(circle at 80% 80%, rgba(0,80,255,.16), transparent 35%),
+        #020711;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(rgba(0,150,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,150,255,.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+
+.app {
+    min-height: 100vh;
+    display: flex;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 230px;
+    min-height: 100vh;
+    padding: 25px 15px;
+    background: rgba(3,15,32,.72);
+    border-right: 1px solid rgba(0,174,255,.25);
+    backdrop-filter: blur(18px);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: #4dc9ff;
+    text-shadow: 0 0 20px #008cff;
+    margin-bottom: 35px;
+}
+
+.nav-btn {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(0,170,255,.25);
+    border-radius: 12px;
+    background: rgba(0,100,180,.08);
+    color: #bdeaff;
+    cursor: pointer;
+    transition: .25s;
+    font-size: 15px;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    background: rgba(0,150,255,.2);
+    border-color: #00aaff;
+    box-shadow: 0 0 18px rgba(0,150,255,.3);
+    color: white;
+}
+
+.language {
+    margin-top: 35px;
+    text-align: center;
+}
+
+.language button {
+    border: 1px solid #008cff;
+    background: rgba(0,120,255,.12);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* MAIN */
+
+.main {
+    margin-left: 230px;
+    width: calc(100% - 230px);
+    padding: 35px;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.system-title {
+    font-size: 35px;
+    font-weight: bold;
+    color: #dff6ff;
+    text-shadow: 0 0 18px #008cff;
+}
+
+.system-status {
+    color: #39ffb0;
+    font-size: 13px;
+}
+
+/* PLAYER */
+
+.player-card {
+    padding: 25px;
+    border: 1px solid rgba(0,174,255,.35);
+    border-radius: 20px;
+    background: rgba(5,25,50,.58);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 35px rgba(0,120,255,.12);
+    margin-bottom: 22px;
+}
+
+.player-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.player-name {
+    font-size: 24px;
+    color: #70d7ff;
+}
+
+.rank {
+    padding: 9px 18px;
+    border: 1px solid #008cff;
+    border-radius: 20px;
+    color: #4dc9ff;
+    box-shadow: 0 0 15px rgba(0,140,255,.3);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.info {
+    padding: 15px;
+    background: rgba(0,100,180,.08);
+    border-radius: 12px;
+    border: 1px solid rgba(0,150,255,.16);
+}
+
+.info small {
+    color: #7da8c4;
+}
+
+.info strong {
+    display: block;
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.xp-box {
+    margin-top: 20px;
+}
+
+.xp-text {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7px;
+    color: #a9dfff;
+}
+
+.xp-bar {
+    height: 12px;
+    background: rgba(255,255,255,.07);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.xp-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#006eff,#00d9ff);
+    box-shadow: 0 0 15px #008cff;
+    transition: .4s;
+}
+
+/* STATS */
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 15px;
+}
+
+.stat {
+    padding: 22px;
+    background: rgba(4,25,48,.62);
+    border: 1px solid rgba(0,160,255,.25);
+    border-radius: 17px;
+    transition: .25s;
+}
+
+.stat:hover {
+    transform: translateY(-3px);
+    border-color: #00aaff;
+    box-shadow: 0 0 20px rgba(0,150,255,.2);
+}
+
+.stat-name {
+    color: #81bddd;
+    font-size: 13px;
+}
+
+.stat-value {
+    font-size: 30px;
+    margin: 8px 0;
+}
+
+.plus {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #00aaff;
+    border-radius: 8px;
+    background: rgba(0,150,255,.12);
+    color: white;
+    cursor: pointer;
+}
+
+.plus:disabled {
+    opacity: .25;
+    cursor: not-allowed;
+}
+
+/* BUTTONS */
+
+.action-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.action {
+    padding: 13px 20px;
+    border: 1px solid #008cff;
+    border-radius: 10px;
+    background: rgba(0,120,255,.12);
+    color: white;
+    cursor: pointer;
+}
+
+.action:hover {
+    background: rgba(0,150,255,.25);
+    box-shadow: 0 0 15px rgba(0,150,255,.25);
+}
+
+.add-points {
+    border-color: #00d9ff;
+    color: #8eeaff;
+}
+
+/* QUESTS */
+
+.quest {
+    padding: 20px;
+    margin-bottom: 12px;
+    background: rgba(4,25,48,.62);
+    border: 1px solid rgba(0,160,255,.25);
+    border-radius: 15px;
+}
+
+.quest h3 {
+    color: #66d5ff;
+    margin-bottom: 7px;
+}
+
+.quest p {
+    color: #9dbbd0;
+    margin-bottom: 12px;
+}
+
+/* REWARDS */
+
+.reward {
+    padding: 22px;
+    background: rgba(4,25,48,.62);
+    border: 1px solid rgba(0,160,255,.25);
+    border-radius: 15px;
+    margin-bottom: 12px;
+}
+
+/* MESSAGE */
+
+.message {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,180,255,.2);
+    background: rgba(0,100,180,.08);
+    color: #9edcff;
+}
+
+/* RTL */
+
+body.rtl .sidebar {
+    left: auto;
+    right: 0;
+    border-right: none;
+    border-left: 1px solid rgba(0,174,255,.25);
+}
+
+body.rtl .main {
+    margin-left: 0;
+    margin-right: 230px;
+}
+
+/* MOBILE */
+
+@media(max-width:850px) {
+    .sidebar {
+        width: 180px;
+    }
+
+    .main {
+        margin-left: 180px;
+        width: calc(100% - 180px);
+        padding: 20px;
+    }
+
+    body.rtl .main {
+        margin-right: 180px;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        min-height: auto;
+        border: none;
+    }
+
+    .app {
+        display: block;
+    }
+
+    .main,
+    body.rtl .main {
+        margin: 0;
+        width: 100%;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+</style>
 </head>
 
 <body>
 
-<div class="system">
+<div class="app">
 
-    <div class="title">
-        SYSTEM
-    </div>
+    <aside class="sidebar">
+        <div class="logo">SYSTEM</div>
 
+        <button class="nav-btn active" id="statusBtn">STATUS</button>
+        <button class="nav-btn" id="questsBtn">QUESTS</button>
+        <button class="nav-btn" id="rewardsBtn">REWARDS</button>
 
-    <div class="player">
+        <div class="language">
+            <button id="languageBtn">العربية</button>
+        </div>
+    </aside>
 
-        <div class="player-name">
-            PLAYER
+    <main class="main">
+
+        <div class="top">
+            <div class="system-title" id="title">SYSTEM</div>
+            <div class="system-status" id="onlineText">● SYSTEM ONLINE</div>
         </div>
 
-        <div class="info">
-            <span class="label">LEVEL</span>
+        <div class="player-card">
 
-            <span
-                class="value"
-                id="level">
-                01
-            </span>
-        </div>
+            <div class="player-header">
+                <div>
+                    <div class="player-name" id="playerLabel">PLAYER</div>
+                    <div style="color:#7195aa;margin-top:5px;">
+                        <span id="levelLabel">LEVEL</span>
+                        <span id="level">1</span>
+                    </div>
+                </div>
 
-
-        <div class="info">
-            <span class="label">RANK</span>
-
-            <span
-                class="value"
-                id="rank">
-                E
-            </span>
-        </div>
-
-
-        <div class="info">
-            <span class="label">COINS</span>
-
-            <span
-                class="value"
-                id="coins">
-                0
-            </span>
-        </div>
-
-
-        <div class="xp">
-
-            <div class="xp-top">
-
-                <span>XP</span>
-
-                <span id="xpText">
-                    35 / 100
-                </span>
-
+                <div class="rank">
+                    <span id="rankLabel">RANK</span>
+                    <span id="rank">E</span>
+                </div>
             </div>
 
+            <div class="info-grid">
 
-            <div class="xp-bar">
+                <div class="info">
+                    <small id="xpLabel">XP</small>
+                    <strong id="xp">0 / 100</strong>
+                </div>
 
-                <div
-                    class="xp-fill"
-                    id="xpFill">
+                <div class="info">
+                    <small id="coinsLabel">COINS</small>
+                    <strong id="coins">0</strong>
+                </div>
+
+                <div class="info">
+                    <small id="pointsLabel">STAT POINTS</small>
+                    <strong id="statPoints">0</strong>
                 </div>
 
             </div>
 
-        </div>
-
-    </div>
-
-
-    <div class="stats">
-
-        <div class="stat">
-
-            <div class="stat-name">
-                STRENGTH
-            </div>
-
-            <div
-                class="stat-value"
-                id="strength">
-                10
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-name">
-                AGILITY
-            </div>
-
-            <div
-                class="stat-value"
-                id="agility">
-                10
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-name">
-                VITALITY
-            </div>
-
-            <div
-                class="stat-value"
-                id="vitality">
-                10
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-name">
-                INTELLIGENCE
-            </div>
-
-            <div
-                class="stat-value"
-                id="intelligence">
-                10
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="buttons">
-
-        <button
-            class="system-button"
-            id="statusButton"
-            type="button">
-
-            STATUS
-
-        </button>
-
-
-        <button
-            class="system-button"
-            id="questsButton"
-            type="button">
-
-            QUESTS
-
-        </button>
-
-
-        <button
-            class="system-button"
-            id="rewardsButton"
-            type="button">
-
-            REWARDS
-
-        </button>
-
-    </div>
-
-
-    <button
-        class="xp-button"
-        id="xpButton"
-        type="button">
-
-        +25 XP
-
-    </button>
-
-
-    <!-- STATUS -->
-
-    <div
-        class="panel"
-        id="statusPanel">
-
-        <div class="panel-title">
-            PLAYER STATUS
-        </div>
-
-
-        <div class="points-box">
-
-            <div class="points-title">
-                AVAILABLE STAT POINTS
-            </div>
-
-            <div
-                class="points-number"
-                id="statPoints">
-                0
-            </div>
-
-        </div>
-
-
-        <div class="stat-distribute">
-
-            <div class="stat-info">
-
-                <div class="stat-title">
-                    💪 STRENGTH
+            <div class="xp-box">
+                <div class="xp-text">
+                    <span id="progressLabel">XP PROGRESS</span>
+                    <span id="xpPercent">0%</span>
                 </div>
 
-                <div class="stat-current">
-                    Current:
-                    <span id="statusStrength">
-                        10
-                    </span>
+                <div class="xp-bar">
+                    <div class="xp-fill" id="xpFill"></div>
+                </div>
+            </div>
+
+            <div class="action-row">
+                <button class="action" id="xpButton">+25 XP</button>
+                <button class="action add-points" id="addPointsButton">
+                    +5 STAT POINTS
+                </button>
+            </div>
+
+            <div class="message" id="message">
+                System initialized.
+            </div>
+
+        </div>
+
+        <!-- STATUS -->
+
+        <section class="section active" id="statusSection">
+
+            <div class="stats">
+
+                <div class="stat">
+                    <div class="stat-name" id="strengthName">STRENGTH</div>
+                    <div class="stat-value" id="strength">10</div>
+                    <button class="plus" id="strengthPlus">+</button>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-name" id="agilityName">AGILITY</div>
+                    <div class="stat-value" id="agility">10</div>
+                    <button class="plus" id="agilityPlus">+</button>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-name" id="vitalityName">VITALITY</div>
+                    <div class="stat-value" id="vitality">10</div>
+                    <button class="plus" id="vitalityPlus">+</button>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-name" id="intelligenceName">INTELLIGENCE</div>
+                    <div class="stat-value" id="intelligence">10</div>
+                    <button class="plus" id="intelligencePlus">+</button>
                 </div>
 
             </div>
 
+        </section>
 
-            <button
-                class="plus-button"
-                id="strengthPlus"
-                type="button">
-                +
-            </button>
+        <!-- QUESTS -->
 
-        </div>
+        <section class="section" id="questsSection">
 
-
-        <div class="stat-distribute">
-
-            <div class="stat-info">
-
-                <div class="stat-title">
-                    🏃 AGILITY
-                </div>
-
-                <div class="stat-current">
-                    Current:
-                    <span id="statusAgility">
-                        10
-                    </span>
-                </div>
-
+            <div class="quest">
+                <h3 id="quest1Title">Daily Training</h3>
+                <p id="quest1Text">Complete your daily training.</p>
+                <button class="action" id="quest1Button">COMPLETE QUEST</button>
             </div>
 
-
-            <button
-                class="plus-button"
-                id="agilityPlus"
-                type="button">
-                +
-            </button>
-
-        </div>
-
-
-        <div class="stat-distribute">
-
-            <div class="stat-info">
-
-                <div class="stat-title">
-                    ❤️ VITALITY
-                </div>
-
-                <div class="stat-current">
-                    Current:
-                    <span id="statusVitality">
-                        10
-                    </span>
-                </div>
-
+            <div class="quest">
+                <h3 id="quest2Title">Gain Experience</h3>
+                <p id="quest2Text">Gain 100 XP.</p>
+                <button class="action" id="quest2Button">COMPLETE QUEST</button>
             </div>
 
-
-            <button
-                class="plus-button"
-                id="vitalityPlus"
-                type="button">
-                +
-            </button>
-
-        </div>
-
-
-        <div class="stat-distribute">
-
-            <div class="stat-info">
-
-                <div class="stat-title">
-                    🧠 INTELLIGENCE
-                </div>
-
-                <div class="stat-current">
-                    Current:
-                    <span id="statusIntelligence">
-                        10
-                    </span>
-                </div>
-
+            <div class="quest">
+                <h3 id="quest3Title">Power Up</h3>
+                <p id="quest3Text">Increase one of your stats.</p>
+                <button class="action" id="quest3Button">COMPLETE QUEST</button>
             </div>
 
+        </section>
 
-            <button
-                class="plus-button"
-                id="intelligencePlus"
-                type="button">
-                +
-            </button>
+        <!-- REWARDS -->
 
-        </div>
+        <section class="section" id="rewardsSection">
 
-    </div>
-
-
-    <!-- QUESTS -->
-
-    <div
-        class="panel"
-        id="questsPanel">
-
-        <div class="panel-title">
-            DAILY QUESTS
-        </div>
-
-        <div id="questList"></div>
-
-    </div>
-
-
-    <!-- REWARDS -->
-
-    <div
-        class="panel"
-        id="rewardsPanel">
-
-        <div class="panel-title">
-            REWARDS
-        </div>
-
-
-        <div class="reward-card">
-
-            <div class="reward-icon">
-                💰
+            <div class="reward">
+                🪙 <strong id="reward1">Daily Reward — 25 Coins</strong>
             </div>
 
-            <div class="reward-title">
-                COINS
+            <div class="reward">
+                ⚡ <strong id="reward2">XP Boost — +50 XP</strong>
             </div>
 
-            <div
-                class="reward-text"
-                id="rewardCoins">
-                0 Coins
+            <div class="reward">
+                ⭐ <strong id="reward3">System Reward — Mystery</strong>
             </div>
 
-        </div>
+        </section>
 
-
-        <div class="reward-card">
-
-            <div class="reward-icon">
-                ⭐
-            </div>
-
-            <div class="reward-title">
-                LEVEL
-            </div>
-
-            <div
-                class="reward-text"
-                id="rewardLevel">
-                Level 01
-            </div>
-
-        </div>
-
-
-        <div class="reward-card">
-
-            <div class="reward-icon">
-                🏆
-            </div>
-
-            <div class="reward-title">
-                RANK
-            </div>
-
-            <div
-                class="reward-text"
-                id="rewardRank">
-                Rank E
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div
-        class="system-message"
-        id="systemMessage">
-
-        SYSTEM ONLINE
-
-    </div>
-
+    </main>
 </div>
-
 
 <script>
 
-    /* =========================
-       PLAYER
-    ========================= */
+let player =
+    JSON.parse(localStorage.getItem("systemPlayer")) || {
+        level: 1,
+        xp: 35,
+        coins: 0,
+        strength: 10,
+        agility: 10,
+        vitality: 10,
+        intelligence: 10,
+        statPoints: 0
+    };
 
-    let player =
-        JSON.parse(
-            localStorage.getItem(
-                "systemPlayer"
-            )
-        ) || {
+if (typeof player.statPoints !== "number") {
+    player.statPoints = 0;
+}
 
-            level: 1,
+let quests =
+    JSON.parse(localStorage.getItem("systemQuests")) || {
+        quest1: false,
+        quest2: false,
+        quest3: false
+    };
 
-            xp: 35,
+let language =
+    localStorage.getItem("systemLanguage") || "en";
 
-            coins: 0,
+function save() {
+    localStorage.setItem("systemPlayer", JSON.stringify(player));
+    localStorage.setItem("systemQuests", JSON.stringify(quests));
+}
 
-            strength: 10,
+function getRank() {
 
-            agility: 10,
+    if (player.level >= 50) return "S";
+    if (player.level >= 35) return "A";
+    if (player.level >= 25) return "B";
+    if (player.level >= 15) return "C";
+    if (player.level >= 5) return "D";
 
-            vitality: 10,
+    return "E";
+}
 
-            intelligence: 10,
+function updateUI() {
 
-            statPoints: 0
+    document.getElementById("level").textContent = player.level;
+    document.getElementById("xp").textContent =
+        player.xp + " / 100";
 
-        };
+    document.getElementById("coins").textContent =
+        player.coins;
 
+    document.getElementById("statPoints").textContent =
+        player.statPoints;
 
-    /* لو البيانات القديمة مفيهاش statPoints */
+    document.getElementById("rank").textContent =
+        getRank();
 
-    if (
-        typeof player.statPoints !==
-        "number"
-    ) {
+    document.getElementById("strength").textContent =
+        player.strength;
 
-        player.statPoints = 0;
+    document.getElementById("agility").textContent =
+        player.agility;
 
+    document.getElementById("vitality").textContent =
+        player.vitality;
+
+    document.getElementById("intelligence").textContent =
+        player.intelligence;
+
+    let percent = player.xp;
+
+    document.getElementById("xpFill").style.width =
+        percent + "%";
+
+    document.getElementById("xpPercent").textContent =
+        percent + "%";
+
+    updatePlusButtons();
+    save();
+}
+
+function addXP(amount) {
+
+    player.xp += amount;
+
+    let levelUp = false;
+
+    while (player.xp >= 100) {
+
+        player.xp -= 100;
+        player.level++;
+        player.coins += 25;
+
+        levelUp = true;
     }
 
+    if (language === "ar") {
 
-    const maxXP = 100;
+        document.getElementById("message").textContent =
+            levelUp
+            ? "⬆️ ارتفع مستواك! نقاط الإحصائيات لا تزيد تلقائياً."
+            : "⚡ تمت إضافة " + amount + " خبرة.";
 
+    } else {
 
-    /* =========================
-       QUESTS
-    ========================= */
+        document.getElementById("message").textContent =
+            levelUp
+            ? "⬆️ LEVEL UP! Stat points are not added automatically."
+            : "⚡ " + amount + " XP added.";
+    }
 
-    let quests =
-        JSON.parse(
-            localStorage.getItem(
-                "systemQuests"
-            )
-        ) || [
+    updateUI();
+}
 
-            {
-                id: 1,
-                name: "FIRST STEP",
-                description:
-                    "أكمل أول مهمة داخل النظام.",
-                xp: 50,
-                coins: 20,
-                completed: false
-            },
+function addStatPoints() {
 
-            {
-                id: 2,
-                name: "SYSTEM TRAINING",
-                description:
-                    "تدرب واحصل على خبرة إضافية.",
-                xp: 75,
-                coins: 30,
-                completed: false
-            },
+    player.statPoints += 5;
 
-            {
-                id: 3,
-                name: "RISING PLAYER",
-                description:
-                    "واصل التقدم وارفع مستواك.",
-                xp: 100,
-                coins: 50,
-                completed: false
-            }
+    document.getElementById("message").textContent =
+        language === "ar"
+        ? "⭐ تمت إضافة 5 نقاط إحصائيات."
+        : "⭐ 5 stat points added.";
 
-        ];
+    updateUI();
+}
 
+function spendStat(statName) {
 
-    /* =========================
-       ELEMENTS
-    ========================= */
+    if (player.statPoints <= 0) {
 
-    const levelElement =
-        document.getElementById(
-            "level"
-        );
+        document.getElementById("message").textContent =
+            language === "ar"
+            ? "❌ لا توجد نقاط إحصائيات."
+            : "❌ No stat points available.";
 
-    const rankElement =
-        document.getElementById(
-            "rank"
-        );
+        return;
+    }
 
-    const coinsElement =
-        document.getElementById(
-            "coins"
-        );
+    player[statName]++;
+    player.statPoints--;
 
-    const xpTextElement =
-        document.getElementById(
-            "xpText"
-        );
+    document.getElementById("message").textContent =
+        language === "ar"
+        ? "⬆️ تم تطوير الإحصائية."
+        : "⬆️ Stat upgraded.";
 
-    const xpFillElement =
-        document.getElementById(
-            "xpFill"
-        );
+    updateUI();
+}
 
-    const systemMessage =
-        document.getElementById(
-            "systemMessage"
-        );
+function updatePlusButtons() {
 
-    const statusPanel =
-        document.getElementById(
-            "statusPanel"
-        );
+    let disabled = player.statPoints <= 0;
 
-    const questsPanel =
-        document.getElementById(
-            "questsPanel"
-        );
+    document.getElementById("strengthPlus").disabled = disabled;
+    document.getElementById("agilityPlus").disabled = disabled;
+    document.getElementById("vitalityPlus").disabled = disabled;
+    document.getElementById("intelligencePlus").disabled = disabled;
+}
 
-    const rewardsPanel =
-        document.getElementById(
-            "rewardsPanel"
-        );
+function showSection(section) {
 
+    document.querySelectorAll(".section").forEach(s => {
+        s.classList.remove("active");
+    });
 
-    /* =========================
-       SAVE
-    ========================= */
+    document.querySelectorAll(".nav-btn").forEach(b => {
+        b.classList.remove("active");
+    });
 
-    function savePlayer() {
+    document.getElementById(section + "Section")
+        .classList.add("active");
+
+    document.getElementById(section + "Btn")
+        .classList.add("active");
+}
+
+/* BUTTONS */
+
+document.getElementById("statusBtn").onclick =
+    () => showSection("status");
+
+document.getElementById("questsBtn").onclick =
+    () => showSection("quests");
+
+document.getElementById("rewardsBtn").onclick =
+    () => showSection("rewards");
+
+document.getElementById("xpButton").onclick =
+    () => addXP(25);
+
+document.getElementById("addPointsButton").onclick =
+    addStatPoints;
+
+document.getElementById("strengthPlus").onclick =
+    () => spendStat("strength");
+
+document.getElementById("agilityPlus").onclick =
+    () => spendStat("agility");
+
+document.getElementById("vitalityPlus").onclick =
+    () => spendStat("vitality");
+
+document.getElementById("intelligencePlus").onclick =
+    () => spendStat("intelligence");
+
+/* QUESTS */
+
+document.getElementById("quest1Button").onclick =
+    function() {
+
+        if (quests.quest1) return;
+
+        quests.quest1 = true;
+        player.coins += 25;
+        addXP(25);
+
+        this.textContent =
+            language === "ar"
+            ? "تم الإنجاز ✓"
+            : "COMPLETED ✓";
+
+        save();
+    };
+
+document.getElementById("quest2Button").onclick =
+    function() {
+
+        if (quests.quest2) return;
+
+        quests.quest2 = true;
+        addXP(100);
+
+        this.textContent =
+            language === "ar"
+            ? "تم الإنجاز ✓"
+            : "COMPLETED ✓";
+
+        save();
+    };
+
+document.getElementById("quest3Button").onclick =
+    function() {
+
+        if (quests.quest3) return;
+
+        quests.quest3 = true;
+
+        addStatPoints();
+
+        this.textContent =
+            language === "ar"
+            ? "تم الإنجاز ✓"
+            : "COMPLETED ✓";
+
+        save();
+    };
+
+/* LANGUAGE */
+
+const translations = {
+
+    en: {
+        title: "SYSTEM",
+        player: "PLAYER",
+        level: "LEVEL",
+        rank: "RANK",
+        xp: "XP",
+        coins: "COINS",
+        points: "STAT POINTS",
+        progress: "XP PROGRESS",
+        status: "STATUS",
+        quests: "QUESTS",
+        rewards: "REWARDS",
+        online: "● SYSTEM ONLINE",
+        strength: "STRENGTH",
+        agility: "AGILITY",
+        vitality: "VITALITY",
+        intelligence: "INTELLIGENCE",
+        quest1: "Daily Training",
+        quest1Text: "Complete your daily training.",
+        quest2: "Gain Experience",
+        quest2Text: "Gain 100 XP.",
+        quest3: "Power Up",
+        quest3Text: "Increase one of your stats.",
+        complete: "COMPLETE QUEST",
+        reward1: "Daily Reward — 25 Coins",
+        reward2: "XP Boost — +50 XP",
+        reward3: "System Reward — Mystery",
+        language: "العربية"
+    },
+
+    ar: {
+        title: "النظام",
+        player: "اللاعب",
+        level: "المستوى",
+        rank: "الرتبة",
+        xp: "الخبرة",
+        coins: "العملات",
+        points: "نقاط الإحصائيات",
+        progress: "تقدم الخبرة",
+        status: "الحالة",
+        quests: "المهام",
+        rewards: "المكافآت",
+        online: "● النظام يعمل",
+        strength: "القوة",
+        agility: "الرشاقة",
+        vitality: "الحيوية",
+        intelligence: "الذكاء",
+        quest1: "التدريب اليومي",
+        quest1Text: "أكمل تدريبك اليومي.",
+        quest2: "اكتساب الخبرة",
+        quest2Text: "احصل على 100 نقطة خبرة.",
+        quest3: "تطوير القوة",
+        quest3Text: "قم بتطوير إحدى إحصائياتك.",
+        complete: "إكمال المهمة",
+        reward1: "المكافأة اليومية — 25 عملة",
+        reward2: "زيادة الخبرة — +50 خبرة",
+        reward3: "مكافأة النظام — مفاجأة",
+        language: "English"
+    }
+};
+
+function applyLanguage() {
+
+    let t = translations[language];
+
+    document.documentElement.lang = language;
+
+    if (language === "ar") {
+        document.body.classList.add("rtl");
+        document.documentElement.dir = "rtl";
+    } else {
+        document.body.classList.remove("rtl");
+        document.documentElement.dir = "ltr";
+    }
+
+    document.getElementById("title").textContent = t.title;
+    document.getElementById("playerLabel").textContent = t.player;
+    document.getElementById("levelLabel").textContent = t.level;
+    document.getElementById("rankLabel").textContent = t.rank;
+    document.getElementById("xpLabel").textContent = t.xp;
+    document.getElementById("coinsLabel").textContent = t.coins;
+    document.getElementById("pointsLabel").textContent = t.points;
+    document.getElementById("progressLabel").textContent = t.progress;
+
+    document.getElementById("statusBtn").textContent = t.status;
+    document.getElementById("questsBtn").textContent = t.quests;
+    document.getElementById("rewardsBtn").textContent = t.rewards;
+
+    document.getElementById("onlineText").textContent = t.online;
+
+    document.getElementById("strengthName").textContent = t.strength;
+    document.getElementById("agilityName").textContent = t.agility;
+    document.getElementById("vitalityName").textContent = t.vitality;
+    document.getElementById("intelligenceName").textContent = t.intelligence;
+
+    document.getElementById("quest1Title").textContent = t.quest1;
+    document.getElementById("quest1Text").textContent = t.quest1Text;
+
+    document.getElementById("quest2Title").textContent = t.quest2;
+    document.getElementById("quest2Text").textContent = t.quest2Text;
+
+    document.getElementById("quest3Title").textContent = t.quest3;
+    document.getElementById("quest3Text").textContent = t.quest3Text;
+
+    document.getElementById("reward1").textContent = t.reward1;
+    document.getElementById("reward2").textContent = t.reward2;
+    document.getElementById("reward3").textContent = t.reward3;
+
+    document.getElementById("languageBtn").textContent = t.language;
+
+    document.getElementById("xpButton").textContent =
+        language === "ar" ? "+25 خبرة" : "+25 XP";
+
+    document.getElementById("addPointsButton").textContent =
+        language === "ar"
+        ? "+5 نقاط إحصائيات"
+        : "+5 STAT POINTS";
+
+    document.querySelectorAll(".quest button").forEach((button) => {
+
+        if (button.textContent.includes("✓")) return;
+
+        button.textContent = t.complete;
+    });
+}
+
+document.getElementById("languageBtn").onclick =
+    function() {
+
+        language = language === "en" ? "ar" : "en";
 
         localStorage.setItem(
-            "systemPlayer",
-            JSON.stringify(player)
+            "systemLanguage",
+            language
         );
 
-    }
-
-
-    function saveQuests() {
-
-        localStorage.setItem(
-            "systemQuests",
-            JSON.stringify(quests)
-        );
-
-    }
-
-
-    /* =========================
-       RANK
-    ========================= */
-
-    function getRank(level) {
-
-        if (level >= 50) return "S";
-
-        if (level >= 35) return "A";
-
-        if (level >= 25) return "B";
-
-        if (level >= 15) return "C";
-
-        if (level >= 5) return "D";
-
-        return "E";
-
-    }
-
-
-    /* =========================
-       UPDATE SYSTEM
-    ========================= */
-
-    function updateSystem() {
-
-        const rank =
-            getRank(
-                player.level
-            );
-
-
-        levelElement.textContent =
-            String(
-                player.level
-            ).padStart(
-                2,
-                "0"
-            );
-
-
-        rankElement.textContent =
-            rank;
-
-
-        coinsElement.textContent =
-            player.coins;
-
-
-        xpTextElement.textContent =
-            player.xp +
-            " / " +
-            maxXP;
-
-
-        xpFillElement.style.width =
-            (
-                player.xp /
-                maxXP *
-                100
-            ) +
-            "%";
-
-
-        document.getElementById(
-            "strength"
-        ).textContent =
-            player.strength;
-
-
-        document.getElementById(
-            "agility"
-        ).textContent =
-            player.agility;
-
-
-        document.getElementById(
-            "vitality"
-        ).textContent =
-            player.vitality;
-
-
-        document.getElementById(
-            "intelligence"
-        ).textContent =
-            player.intelligence;
-
-
-        updateStatus();
-
-
-        updateRewards();
-
-
-        savePlayer();
-
-    }
-
-
-    /* =========================
-       XP
-    ========================= */
-
-    function addXP(amount) {
-
-        player.xp += amount;
-
-
-        let levelUp = false;
-
-        let levelsGained = 0;
-
-
-        while (
-            player.xp >= maxXP
-        ) {
-
-            player.xp -= maxXP;
-
-            player.level++;
-
-            player.coins += 25;
-
-
-            /*
-                كل Level
-                = 5 Stat Points
-            */
-
-            player.statPoints += 5;
-
-
-            levelsGained++;
-
-
-            levelUp = true;
-
-        }
-
-
-        if (levelUp) {
-
-            systemMessage.textContent =
-                "LEVEL UP! +" +
-                (levelsGained * 5) +
-                " STAT POINTS";
-
-        } else {
-
-            systemMessage.textContent =
-                "+" +
-                amount +
-                " XP ACQUIRED";
-
-        }
-
-
-        updateSystem();
-
-    }
-
-
-    /* =========================
-       STATUS
-    ========================= */
-
-    function updateStatus() {
-
-        document.getElementById(
-            "statusLevel"
-        ).textContent =
-            String(
-                player.level
-            ).padStart(
-                2,
-                "0"
-            );
-
-
-        document.getElementById(
-            "statusRank"
-        ).textContent =
-            getRank(
-                player.level
-            );
-
-
-        document.getElementById(
-            "statusStrength"
-        ).textContent =
-            player.strength;
-
-
-        document.getElementById(
-            "statusAgility"
-        ).textContent =
-            player.agility;
-
-
-        document.getElementById(
-            "statusVitality"
-        ).textContent =
-            player.vitality;
-
-
-        document.getElementById(
-            "statusIntelligence"
-        ).textContent =
-            player.intelligence;
-
-
-        document.getElementById(
-            "statPoints"
-        ).textContent =
-            player.statPoints;
-
-
-        updatePlusButtons();
-
-    }
-
-
-    /* =========================
-       PLUS BUTTONS
-    ========================= */
-
-    function updatePlusButtons() {
-
-        const buttons =
-            document.querySelectorAll(
-                ".plus-button"
-            );
-
-
-        buttons.forEach(
-            function(button) {
-
-                button.disabled =
-                    player.statPoints <= 0;
-
-            }
-        );
-
-    }
-
-
-    function spendStat(
-        statName
-    ) {
-
-        if (
-            player.statPoints <= 0
-        ) {
-
-            systemMessage.textContent =
-                "NO STAT POINTS AVAILABLE";
-
-            return;
-
-        }
-
-
-        player[statName]++;
-
-        player.statPoints--;
-
-
-        savePlayer();
-
-
-        updateSystem();
-
-
-        systemMessage.textContent =
-            statName.toUpperCase() +
-            " INCREASED!";
-
-    }
-
-
-    /* =========================
-       STATUS BUTTON
-    ========================= */
-
-    document
-        .getElementById(
-            "statusButton"
-        )
-        .addEventListener(
-            "click",
-            function() {
-
-                closePanels();
-
-                statusPanel.classList.add(
-                    "active"
-                );
-
-                this.classList.add(
-                    "active"
-                );
-
-
-                updateStatus();
-
-
-                systemMessage.textContent =
-                    "STATUS — DISTRIBUTE YOUR POINTS";
-
-            }
-        );
-
-
-    /* =========================
-       QUEST BUTTON
-    ========================= */
-
-    document
-        .getElementById(
-            "questsButton"
-        )
-        .addEventListener(
-            "click",
-            function() {
-
-                closePanels();
-
-                questsPanel.classList.add(
-                    "active"
-                );
-
-                this.classList.add(
-                    "active"
-                );
-
-
-                renderQuests();
-
-
-                systemMessage.textContent =
-                    "QUESTS — ACTIVE MISSIONS";
-
-            }
-        );
-
-
-    /* =========================
-       REWARDS BUTTON
-    ========================= */
-
-    document
-        .getElementById(
-            "rewardsButton"
-        )
-        .addEventListener(
-            "click",
-            function() {
-
-                closePanels();
-
-                rewardsPanel.classList.add(
-                    "active"
-                );
-
-                this.classList.add(
-                    "active"
-                );
-
-
-                updateRewards();
-
-
-                systemMessage.textContent =
-                    "REWARDS — PLAYER REWARDS";
-
-            }
-        );
-
-
-    /* =========================
-       XP BUTTON
-    ========================= */
-
-    document
-        .getElementById(
-            "xpButton"
-        )
-        .addEventListener(
-            "click",
-            function() {
-
-                addXP(25);
-
-            }
-        );
-
-
-    /* =========================
-       STAT BUTTONS
-    ========================= */
-
-    document
-        .getElementById(
-            "strengthPlus"
-        )
-        .addEventListener(
-            "click",
-            function() {
-
-                spendStat(
-                    "strength"
-                );
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "agilityPlus"
-        )
-        .addEventListener(
-            "click",
-            function() {
-
-                spendStat(
-                    "agility"
-                );
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "vitalityPlus"
-        )
-        .addEventListener(
-            "click",
-            function() {
-
-                spendStat(
-                    "vitality"
-                );
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "intelligencePlus"
-        )
-        .addEventListener(
-            "click",
-            function() {
-
-                spendStat(
-                    "intelligence"
-                );
-
-            }
-        );
-
-
-    /* =========================
-       CLOSE PANELS
-    ========================= */
-
-    function closePanels() {
-
-        statusPanel.classList.remove(
-            "active"
-        );
-
-        questsPanel.classList.remove(
-            "active"
-        );
-
-        rewardsPanel.classList.remove(
-            "active"
-        );
-
-
-        document
-            .querySelectorAll(
-                ".system-button"
-            )
-            .forEach(
-                function(button) {
-
-                    button.classList.remove(
-                        "active"
-                    );
-
-                }
-            );
-
-    }
-
-
-    /* =========================
-       REWARDS
-    ========================= */
-
-    function updateRewards() {
-
-        document.getElementById(
-            "rewardCoins"
-        ).textContent =
-            player.coins +
-            " Coins";
-
-
-        document.getElementById(
-            "rewardLevel"
-        ).textContent =
-            "Level " +
-            String(
-                player.level
-            ).padStart(
-                2,
-                "0"
-            );
-
-
-        document.getElementById(
-            "rewardRank"
-        ).textContent =
-            "Rank " +
-            getRank(
-                player.level
-            );
-
-    }
-
-
-    /* =========================
-       QUESTS
-    ========================= */
-
-    function renderQuests() {
-
-        const list =
-            document.getElementById(
-                "questList"
-            );
-
-
-        list.innerHTML = "";
-
-
-        quests.forEach(
-            function(quest) {
-
-                const questBox =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                questBox.className =
-                    "quest";
-
-
-                const name =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                name.className =
-                    "quest-name";
-
-
-                name.textContent =
-                    quest.name;
-
-
-                const description =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                description.className =
-                    "quest-description";
-
-
-                description.textContent =
-                    quest.description;
-
-
-                const reward =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                reward.className =
-                    "quest-reward";
-
-
-                reward.textContent =
-                    "+" +
-                    quest.xp +
-                    " XP | +" +
-                    quest.coins +
-                    " COINS";
-
-
-                const button =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                button.className =
-                    "complete-button";
-
-
-                if (
-                    quest.completed
-                ) {
-
-                    button.textContent =
-                        "✓ COMPLETED";
-
-                    button.classList.add(
-                        "done"
-                    );
-
-                    button.disabled =
-                        true;
-
-                } else {
-
-                    button.textContent =
-                        "COMPLETE QUEST";
-
-
-                    button.addEventListener(
-                        "click",
-                        function() {
-
-                            completeQuest(
-                                quest.id
-                            );
-
-                        }
-                    );
-
-                }
-
-
-                questBox.appendChild(
-                    name
-                );
-
-
-                questBox.appendChild(
-                    description
-                );
-
-
-                questBox.appendChild(
-                    reward
-                );
-
-
-                questBox.appendChild(
-                    button
-                );
-
-
-                list.appendChild(
-                    questBox
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =========================
-       COMPLETE QUEST
-    ========================= */
-
-    function completeQuest(id) {
-
-        const quest =
-            quests.find(
-                function(item) {
-
-                    return item.id === id;
-
-                }
-            );
-
-
-        if (
-            !quest ||
-            quest.completed
-        ) {
-
-            return;
-
-        }
-
-
-        quest.completed =
-            true;
-
-
-        player.coins +=
-            quest.coins;
-
-
-        saveQuests();
-
-
-        addXP(
-            quest.xp
-        );
-
-
-        systemMessage.textContent =
-            "QUEST COMPLETE!";
-
-
-        renderQuests();
-
-    }
-
-
-    /* =========================
-       START
-    ========================= */
-
-    updateSystem();
+        applyLanguage();
+    };
+
+applyLanguage();
+updateUI();
 
 </script>
 
