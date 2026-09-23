@@ -3,149 +3,111 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SYSTEM</title>
+
+<title>System</title>
 
 <style>
+
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-    font-family: Arial, sans-serif;
+    margin: 0;
     min-height: 100vh;
-    color: white;
+    color: #e8f7ff;
+    font-family: Arial, sans-serif;
+
     background:
-        radial-gradient(circle at 50% 0%, #073e70, #020812 45%, #000);
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(0, 140, 255, 0.22) 0%,
+            rgba(0, 60, 140, 0.12) 25%,
+            transparent 55%
+        ),
+        radial-gradient(
+            circle at 15% 80%,
+            rgba(0, 110, 255, 0.16),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at 85% 70%,
+            rgba(0, 80, 180, 0.14),
+            transparent 45%
+        ),
+        linear-gradient(
+            135deg,
+            #020711 0%,
+            #031322 35%,
+            #020812 70%,
+            #00040a 100%
+        );
+
+    background-attachment: fixed;
     overflow-x: hidden;
 }
 
-/* ==================================================
-   HEAVY GLITCH EFFECT
-================================================== */
-
-#glitchLayer {
+body::before {
+    content: "";
     position: fixed;
     inset: 0;
-    z-index: 10000;
     pointer-events: none;
-    opacity: 0;
-    overflow: hidden;
-    background:
-        repeating-linear-gradient(
-            0deg,
-            rgba(0,180,255,.08) 0px,
-            rgba(0,180,255,.08) 1px,
-            transparent 1px,
-            transparent 4px
-        );
-}
+    z-index: -1;
 
-#glitchLayer.active {
-    opacity: 1;
-    animation: screenGlitch .12s infinite;
-}
-
-#glitchLayer::before,
-#glitchLayer::after {
-    content: "";
-    position: absolute;
-    inset: -20px;
-}
-
-#glitchLayer::before {
-    background:
-        repeating-linear-gradient(
-            90deg,
-            transparent 0px,
-            transparent 7px,
-            rgba(0,140,255,.08) 8px,
-            transparent 10px
-        );
-    animation: glitchMove .08s infinite;
-}
-
-#glitchLayer::after {
     background:
         linear-gradient(
-            transparent 0%,
-            rgba(0,170,255,.08) 48%,
-            rgba(255,255,255,.15) 50%,
-            rgba(0,100,255,.08) 52%,
-            transparent 100%
+            rgba(0, 140, 255, 0.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0, 140, 255, 0.025) 1px,
+            transparent 1px
         );
-    animation: scanMove .25s linear infinite;
+
+    background-size: 70px 70px;
+
+    mask-image:
+        radial-gradient(
+            circle at center,
+            black,
+            transparent 80%
+        );
 }
 
-@keyframes screenGlitch {
-    0% {
-        transform: translate(0);
-        filter: brightness(1);
-    }
+/* BLUE LIGHT */
 
-    20% {
-        transform: translate(-7px, 2px);
-        filter: brightness(1.8) contrast(1.5);
-    }
+body::after {
+    content: "";
+    position: fixed;
+    width: 700px;
+    height: 700px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 
-    40% {
-        transform: translate(6px, -3px);
-        filter: brightness(.7) contrast(2);
-    }
+    background: radial-gradient(
+        circle,
+        rgba(0, 130, 255, 0.10),
+        transparent 65%
+    );
 
-    60% {
-        transform: translate(-3px, 5px);
-        filter: brightness(1.5);
-    }
-
-    80% {
-        transform: translate(5px, -2px);
-        filter: brightness(.8) contrast(1.8);
-    }
-
-    100% {
-        transform: translate(0);
-        filter: brightness(1);
-    }
+    pointer-events: none;
+    z-index: -2;
 }
 
-@keyframes glitchMove {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(25px); }
-    100% { transform: translateX(-25px); }
-}
+/* =========================
+   INTRO SCREEN
+========================= */
 
-@keyframes scanMove {
-    0% {
-        transform: translateY(-100%);
-    }
-
-    100% {
-        transform: translateY(100%);
-    }
-}
-
-body.systemGlitch {
-    animation: bodyShake .1s infinite;
-}
-
-@keyframes bodyShake {
-    0% { transform: translate(0); }
-    25% { transform: translate(-3px, 2px); }
-    50% { transform: translate(3px, -2px); }
-    75% { transform: translate(-2px, -1px); }
-    100% { transform: translate(0); }
-}
-
-/* ==================================================
-   INTRO
-================================================== */
-
-#introScreen {
+#introScreen,
+#registrationScreen {
     position: fixed;
     inset: 0;
-    z-index: 9999;
 
     display: flex;
     align-items: center;
@@ -154,621 +116,826 @@ body.systemGlitch {
     background:
         radial-gradient(
             circle at center,
-            rgba(0,130,255,.12),
-            rgba(0,0,0,.96)
+            rgba(0, 100, 255, 0.15),
+            rgba(0, 0, 0, 0.88)
         );
 
-    backdrop-filter: blur(32px);
-    -webkit-backdrop-filter: blur(32px);
+    backdrop-filter: blur(16px);
 
-    transition:
-        opacity 1s ease,
-        filter 1s ease,
-        transform 1s ease;
+    z-index: 9999;
 }
 
-#introScreen.hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    filter: blur(25px);
-    transform: scale(1.08);
-}
+.introBox,
+.registrationBox {
+    width: min(600px, 90%);
 
-.introBox {
-    position: relative;
-
-    width: min(92%, 650px);
-    padding: 55px 30px;
+    padding: 45px 35px;
 
     text-align: center;
 
     background:
         linear-gradient(
             135deg,
-            rgba(0,100,180,.20),
-            rgba(0,15,35,.42)
+            rgba(0, 80, 150, 0.20),
+            rgba(0, 10, 25, 0.68)
         );
 
-    border: 1px solid rgba(40,180,255,.9);
-    border-radius: 20px;
-
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(0, 170, 255, 0.65);
 
     box-shadow:
-        0 0 25px rgba(0,140,255,.6),
-        0 0 80px rgba(0,100,255,.25),
-        inset 0 0 50px rgba(0,150,255,.12);
+        0 0 20px rgba(0, 130, 255, 0.25),
+        0 0 70px rgba(0, 100, 255, 0.12),
+        inset 0 0 30px rgba(0, 150, 255, 0.05);
 
-    animation: introFloat 3s ease-in-out infinite;
+    backdrop-filter: blur(20px);
+
+    clip-path: polygon(
+        0 12px,
+        12px 0,
+        calc(100% - 12px) 0,
+        100% 12px,
+        100% calc(100% - 12px),
+        calc(100% - 12px) 100%,
+        12px 100%,
+        0 calc(100% - 12px)
+    );
 }
 
-.introBox::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 22px;
-    pointer-events: none;
-
-    border: 1px solid rgba(0,180,255,.35);
-
-    animation: borderPulse 1s infinite;
-}
-
-@keyframes introFloat {
-    0%,100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-5px);
-    }
-}
-
-@keyframes borderPulse {
-    0%,100% {
-        opacity: .3;
-    }
-
-    50% {
-        opacity: 1;
-        box-shadow: 0 0 35px rgba(0,160,255,.8);
-    }
-}
-
-.systemSmall {
-    color: #38baff;
-    letter-spacing: 10px;
-    font-size: 13px;
-    margin-bottom: 25px;
-    text-shadow:
-        0 0 10px #008cff,
-        0 0 30px #008cff;
-}
-
-.chosenText {
-    font-size: clamp(30px, 6vw, 52px);
-    font-weight: bold;
-    color: #fff;
-
-    text-shadow:
-        0 0 10px #008cff,
-        0 0 30px #006eff,
-        0 0 60px #004cff,
-        0 0 100px #003cff;
-
-    margin-bottom: 20px;
-
-    animation: titleGlitch 1.8s infinite;
-}
-
-@keyframes titleGlitch {
-    0%,90%,100% {
-        transform: translate(0);
-        opacity: 1;
-    }
-
-    92% {
-        transform: translate(-4px, 1px);
-        opacity: .8;
-    }
-
-    94% {
-        transform: translate(5px, -2px);
-        opacity: .95;
-    }
-
-    96% {
-        transform: translate(-2px, 2px);
-    }
-}
-
-.chosenSub {
-    color: #9ddfff;
+.systemTitle {
     font-size: 18px;
-    letter-spacing: 2px;
+    letter-spacing: 8px;
+    color: #55c8ff;
+    margin-bottom: 30px;
+}
+
+#chosenText {
+    font-size: clamp(30px, 6vw, 55px);
+    letter-spacing: 4px;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 0 8px #00aaff,
+        0 0 25px rgba(0, 140, 255, 0.8);
+
+    margin: 0 0 25px;
+}
+
+.introDescription {
+    color: #b9dfff;
+    font-size: 18px;
     line-height: 1.8;
-    margin-bottom: 35px;
 }
 
-.introButtons {
+.question {
+    margin-top: 15px;
+    color: #6fd5ff;
+    font-size: 20px;
+}
+
+.systemButtons {
+    margin-top: 35px;
+
     display: flex;
+    gap: 20px;
     justify-content: center;
-    gap: 18px;
 }
 
-.introButton {
-    min-width: 140px;
-    padding: 15px 25px;
+.systemButtons button,
+#registerButton,
+.actionButton,
+.statButton {
 
-    color: white;
-    font-size: 17px;
-    font-weight: bold;
+    border: 1px solid #00aaff;
 
-    background: rgba(0,110,220,.2);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 150, 255, 0.20),
+            rgba(0, 60, 120, 0.12)
+        );
 
-    border: 1px solid #159cff;
-    border-radius: 10px;
+    color: #ffffff;
+
+    padding: 13px 30px;
 
     cursor: pointer;
 
-    transition: .25s;
-}
-
-.introButton:hover {
-    transform: translateY(-3px);
-
-    background: rgba(0,140,255,.4);
+    font-weight: bold;
+    letter-spacing: 2px;
 
     box-shadow:
-        0 0 20px rgba(0,150,255,.7),
-        0 0 40px rgba(0,100,255,.25);
+        0 0 12px rgba(0, 150, 255, 0.20);
+
+    transition: 0.25s;
 }
 
-#noButton {
-    border-color: #52687c;
-    background: rgba(50,70,90,.18);
-}
+.systemButtons button:hover,
+#registerButton:hover,
+.actionButton:hover,
+.statButton:hover {
 
-#noButton:hover {
-    background: rgba(80,100,120,.3);
-    box-shadow: 0 0 15px rgba(100,120,140,.3);
-}
+    background: rgba(0, 150, 255, 0.28);
 
-/* ==================================================
-   REGISTRATION
-================================================== */
+    box-shadow:
+        0 0 20px rgba(0, 170, 255, 0.55);
+
+    transform: translateY(-2px);
+}
 
 #registrationScreen {
-    position: fixed;
-    inset: 0;
-    z-index: 9998;
-
     display: none;
-    align-items: center;
-    justify-content: center;
-
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(0,120,255,.18),
-            rgba(0,0,0,.94)
-        );
-
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
-
-#registrationScreen.show {
-    display: flex;
-}
-
-.registrationBox {
-    width: min(92%, 500px);
-    padding: 45px 30px;
-
-    text-align: center;
-
-    background: rgba(0,45,85,.3);
-
-    border: 1px solid rgba(0,160,255,.65);
-    border-radius: 20px;
-
-    box-shadow:
-        0 0 35px rgba(0,130,255,.35),
-        inset 0 0 30px rgba(0,130,255,.08);
-
-    backdrop-filter: blur(20px);
-}
-
-.registrationTitle {
-    color: #42bcff;
-    letter-spacing: 5px;
-    margin-bottom: 18px;
-    font-size: 15px;
 }
 
 .registrationBox h1 {
-    font-size: 34px;
-    margin-bottom: 12px;
+    color: #55c8ff;
+    letter-spacing: 5px;
+}
 
-    text-shadow: 0 0 20px #008cff;
+.registrationBox h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
 }
 
 .registrationBox p {
-    color: #9ddfff;
-    margin-bottom: 30px;
+    color: #a8cce6;
 }
 
 #nameInput {
     width: 100%;
+    max-width: 400px;
 
     padding: 15px;
 
+    margin: 25px auto;
+
+    display: block;
+
+    background: rgba(0, 20, 40, 0.7);
+
+    border: 1px solid rgba(0, 170, 255, 0.65);
+
     color: white;
-    font-size: 17px;
-
-    background: rgba(0,20,40,.65);
-
-    border: 1px solid rgba(0,150,255,.55);
-    border-radius: 10px;
 
     outline: none;
+
+    text-align: center;
+
+    font-size: 17px;
 }
 
 #nameInput:focus {
-    border-color: #00aaff;
-
     box-shadow:
-        0 0 15px rgba(0,150,255,.35);
+        0 0 20px rgba(0, 150, 255, 0.3);
 }
 
-#registerButton {
-    width: 100%;
-
+#registrationError {
+    display: none;
+    color: #ff5577;
     margin-top: 15px;
-    padding: 14px;
-
-    color: white;
-    font-size: 17px;
-    font-weight: bold;
-
-    background: rgba(0,110,220,.25);
-
-    border: 1px solid #008cff;
-    border-radius: 10px;
-
-    cursor: pointer;
 }
 
-#registerButton:hover {
-    background: rgba(0,140,255,.4);
-    box-shadow: 0 0 20px rgba(0,150,255,.5);
+/* =========================
+   MAIN APP
+========================= */
+
+#app {
+    display: none;
+
+    min-height: 100vh;
 }
 
-.registrationError {
-    color: #ff6688;
-    min-height: 25px;
-    margin-top: 12px;
+.layout {
+    display: flex;
+    min-height: 100vh;
 }
 
-/* ==================================================
+/* =========================
    SIDEBAR
-================================================== */
+========================= */
 
 .sidebar {
+
+    width: 230px;
+
+    padding: 25px 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0, 50, 100, 0.35),
+            rgba(0, 5, 15, 0.65)
+        );
+
+    border-right: 1px solid rgba(0, 160, 255, 0.25);
+
+    backdrop-filter: blur(15px);
+
     position: fixed;
     left: 0;
     top: 0;
-
-    width: 230px;
-    height: 100vh;
-
-    padding: 25px 15px;
-
-    background: rgba(0,20,40,.65);
-
-    border-right: 1px solid rgba(0,150,255,.35);
-
-    backdrop-filter: blur(15px);
+    bottom: 0;
 }
 
 .logo {
-    text-align: center;
 
-    color: #42bcff;
+    font-size: 26px;
 
-    font-size: 25px;
-    font-weight: bold;
+    letter-spacing: 6px;
 
-    letter-spacing: 5px;
+    color: #57caff;
 
-    margin-bottom: 35px;
+    text-shadow:
+        0 0 15px rgba(0, 150, 255, 0.7);
 
-    text-shadow: 0 0 15px #008cff;
+    margin-bottom: 45px;
 }
 
-.sideButton {
+.navButton {
+
     width: 100%;
 
-    padding: 13px;
+    padding: 14px;
+
     margin-bottom: 12px;
+
+    background: rgba(0, 90, 150, 0.08);
+
+    border: 1px solid rgba(0, 150, 255, 0.20);
+
+    color: #a9dfff;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    letter-spacing: 2px;
+
+    transition: 0.25s;
+}
+
+.navButton:hover,
+.navButton.active {
 
     color: white;
 
-    background: rgba(0,100,180,.12);
+    background: rgba(0, 130, 255, 0.15);
 
-    border: 1px solid rgba(0,150,255,.4);
-    border-radius: 10px;
-
-    cursor: pointer;
-}
-
-.sideButton:hover {
-    background: rgba(0,130,255,.3);
+    border-color: rgba(0, 170, 255, 0.6);
 
     box-shadow:
-        0 0 15px rgba(0,150,255,.3);
+        0 0 15px rgba(0, 140, 255, 0.18);
 }
 
-/* ==================================================
-   MAIN
-================================================== */
+/* =========================
+   MAIN CONTENT
+========================= */
 
 .main {
+
     margin-left: 230px;
-    padding: 30px;
+
+    width: calc(100% - 230px);
+
+    padding: 35px;
+
+    max-width: 1500px;
 }
 
-.glass {
-    background: rgba(0,55,100,.25);
+.topBar {
 
-    border: 1px solid rgba(0,160,255,.35);
-    border-radius: 18px;
+    display: flex;
 
-    backdrop-filter: blur(15px);
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.pageTitle {
+
+    font-size: 30px;
+
+    letter-spacing: 5px;
+
+    color: #dff6ff;
+
+    text-shadow:
+        0 0 15px rgba(0, 140, 255, 0.35);
+}
+
+/* =========================
+   GLASS CARDS
+========================= */
+
+.card {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 90, 160, 0.13),
+            rgba(0, 15, 30, 0.55)
+        );
+
+    border: 1px solid rgba(0, 160, 255, 0.25);
+
+    backdrop-filter: blur(18px);
 
     box-shadow:
-        0 0 25px rgba(0,120,255,.12);
+        0 0 25px rgba(0, 80, 150, 0.08),
+        inset 0 0 25px rgba(0, 120, 255, 0.025);
+
+    padding: 25px;
+
+    margin-bottom: 25px;
 }
 
 .playerCard {
-    padding: 25px;
-    margin-bottom: 20px;
-}
 
-.playerTop {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr
+        1fr
+        1fr;
+
     gap: 20px;
 }
 
 .playerName {
-    font-size: 30px;
-    color: #70c9ff;
 
-    text-shadow: 0 0 15px #008cff;
+    font-size: 28px;
+
+    color: white;
+
+    margin-bottom: 8px;
 }
 
-.playerInfo {
-    color: #9edcff;
-    margin-top: 8px;
+.label {
+
+    font-size: 12px;
+
+    color: #6fb8dd;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
 }
 
-.xpContainer {
+.value {
+
+    font-size: 22px;
+
+    color: #e8f8ff;
+
+    margin-top: 5px;
+}
+
+/* =========================
+   XP
+========================= */
+
+.xpSection {
+
     margin-top: 20px;
 }
 
+.xpTop {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #9edaff;
+
+    margin-bottom: 8px;
+}
+
 .xpBar {
+
     width: 100%;
+
     height: 14px;
 
+    background: rgba(0, 20, 40, 0.8);
+
+    border: 1px solid rgba(0, 150, 255, 0.25);
+
     overflow: hidden;
-
-    background: rgba(0,0,0,.5);
-
-    border-radius: 20px;
 }
 
-.xpFill {
-    width: 35%;
+#xpFill {
+
+    width: 0%;
+
     height: 100%;
 
-    background: linear-gradient(
-        90deg,
-        #0077ff,
-        #00c8ff
-    );
+    background:
+        linear-gradient(
+            90deg,
+            #0077ff,
+            #35d5ff
+        );
 
-    box-shadow: 0 0 15px #008cff;
+    box-shadow:
+        0 0 15px rgba(0, 170, 255, 0.8);
 
-    transition: width .4s;
+    transition: width 0.4s;
 }
 
-.action {
-    margin-top: 15px;
+/* =========================
+   STATS
+========================= */
 
-    padding: 12px 20px;
+.sectionTitle {
+
+    color: #5ecbff;
+
+    letter-spacing: 3px;
+
+    font-size: 17px;
+
+    margin-bottom: 18px;
+}
+
+.statsGrid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+}
+
+.stat {
+
+    padding: 20px;
+
+    background:
+        rgba(0, 60, 110, 0.10);
+
+    border: 1px solid rgba(0, 140, 255, 0.18);
+
+    text-align: center;
+}
+
+.statName {
+
+    color: #8ac9e8;
+
+    font-size: 13px;
+
+    letter-spacing: 2px;
+}
+
+.statValue {
+
+    font-size: 30px;
+
+    margin: 10px 0;
 
     color: white;
 
-    background: rgba(0,110,220,.2);
-
-    border: 1px solid #008cff;
-    border-radius: 10px;
-
-    cursor: pointer;
+    text-shadow:
+        0 0 10px rgba(0, 150, 255, 0.5);
 }
 
-.action:hover {
-    background: rgba(0,140,255,.35);
-    box-shadow: 0 0 15px rgba(0,150,255,.5);
+.statButton {
+
+    padding: 6px 12px;
+
+    font-size: 16px;
 }
 
-.point-input {
+/* =========================
+   QUESTS
+========================= */
+
+.quest {
+
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 18px;
+
+    margin-bottom: 12px;
+
+    background:
+        rgba(0, 60, 110, 0.10);
+
+    border-left: 2px solid #008cff;
+
+    border-bottom: 1px solid rgba(0, 130, 255, 0.12);
 }
 
-.point-input input {
-    flex: 1;
-
-    padding: 12px;
+.questTitle {
 
     color: white;
 
-    background: rgba(0,20,40,.6);
+    font-size: 17px;
+}
 
-    border: 1px solid rgba(0,150,255,.4);
-    border-radius: 10px;
+.questReward {
+
+    color: #54caff;
+
+    font-size: 13px;
+}
+
+/* =========================
+   REWARDS
+========================= */
+
+.rewardGrid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 15px;
+}
+
+.reward {
+
+    padding: 25px;
+
+    text-align: center;
+
+    background:
+        rgba(0, 60, 110, 0.10);
+
+    border: 1px solid rgba(0, 150, 255, 0.18);
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+#systemMessage {
+
+    color: #58caff;
+
+    min-height: 24px;
+
+    margin-top: 15px;
+
+    font-size: 14px;
+}
+
+/* =========================
+   ADD POINTS
+========================= */
+
+.pointsBox {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+#pointsInput {
+
+    width: 150px;
+
+    padding: 11px;
+
+    background: rgba(0, 20, 40, 0.75);
+
+    border: 1px solid rgba(0, 150, 255, 0.3);
+
+    color: white;
 
     outline: none;
 }
 
-.stats {
-    display: grid;
+/* =========================
+   GLITCH
+========================= */
 
-    grid-template-columns: repeat(2,1fr);
+#glitchLayer {
 
-    gap: 15px;
+    position: fixed;
 
-    margin-top: 20px;
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 10000;
+
+    opacity: 0;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            transparent 3px,
+            rgba(0, 170, 255, 0.04) 4px
+        );
 }
 
-.stat {
-    padding: 20px;
+body.systemGlitch #glitchLayer {
+
+    opacity: 1;
+
+    animation:
+        glitchMove 0.12s infinite,
+        glitchFlash 0.25s infinite;
 }
 
-.statName {
-    color: #75caff;
-    margin-bottom: 10px;
+body.systemGlitch {
+
+    animation:
+        bodyShake 0.12s infinite;
 }
 
-.statValue {
-    font-size: 28px;
+@keyframes glitchMove {
+
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(-3px, 2px);
+    }
+
+    50% {
+        transform: translate(4px, -2px);
+    }
+
+    75% {
+        transform: translate(-2px, -3px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
 }
 
-.plusButton {
-    float: right;
+@keyframes glitchFlash {
 
-    width: 35px;
-    height: 35px;
+    0%, 100% {
+        filter: none;
+    }
 
-    color: white;
-
-    background: rgba(0,120,220,.2);
-
-    border: 1px solid #008cff;
-    border-radius: 8px;
-
-    cursor: pointer;
+    50% {
+        filter:
+            contrast(1.4)
+            brightness(1.2);
+    }
 }
 
-.plusButton:hover {
-    background: rgba(0,150,255,.4);
+@keyframes bodyShake {
+
+    0% {
+        transform: translate(0);
+    }
+
+    25% {
+        transform: translate(-2px, 1px);
+    }
+
+    50% {
+        transform: translate(2px, -1px);
+    }
+
+    75% {
+        transform: translate(-1px, -2px);
+    }
+
+    100% {
+        transform: translate(0);
+    }
 }
 
-.section {
-    margin-top: 20px;
-    padding: 25px;
-}
-
-.quest {
-    padding: 15px;
-    margin-top: 12px;
-
-    background: rgba(0,40,70,.25);
-
-    border: 1px solid rgba(0,150,255,.25);
-    border-radius: 10px;
-}
-
-.message {
-    min-height: 25px;
-    margin-top: 15px;
-    color: #80d5ff;
-}
-
-.hiddenSection {
-    display: none;
-}
-
-/* ==================================================
+/* =========================
    MOBILE
-================================================== */
+========================= */
 
-@media(max-width:750px) {
+@media (max-width: 900px) {
 
     .sidebar {
-        position: relative;
 
-        width: 100%;
-        height: auto;
-
-        border-right: none;
-        border-bottom: 1px solid rgba(0,150,255,.3);
+        width: 180px;
     }
 
     .main {
-        margin-left: 0;
+
+        margin-left: 180px;
+
+        width: calc(100% - 180px);
+
+        padding: 20px;
     }
 
-    .stats {
-        grid-template-columns: 1fr;
+    .playerCard {
+
+        grid-template-columns:
+            repeat(2, 1fr);
     }
 
-    .playerTop {
-        flex-direction: column;
+    .statsGrid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
     }
 
-    .introButtons {
-        flex-direction: column;
-    }
+    .rewardGrid {
 
-    .introButton {
-        width: 100%;
+        grid-template-columns:
+            1fr;
     }
 }
+
+@media (max-width: 600px) {
+
+    .sidebar {
+
+        position: relative;
+
+        width: 100%;
+
+        height: auto;
+    }
+
+    .layout {
+
+        display: block;
+    }
+
+    .main {
+
+        margin-left: 0;
+
+        width: 100%;
+
+        padding: 15px;
+    }
+
+    .playerCard {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .statsGrid {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .topBar {
+
+        display: block;
+    }
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- HEAVY GLITCH -->
 <div id="glitchLayer"></div>
 
-<!-- INTRO -->
+<!-- =========================
+     INTRO
+========================= -->
 
 <div id="introScreen">
 
     <div class="introBox">
 
-        <div class="systemSmall">
+        <div class="systemTitle">
             SYSTEM
         </div>
 
-        <div class="chosenText">
+        <h1 id="chosenText">
             YOU HAVE BEEN CHOSEN
+        </h1>
+
+        <div class="introDescription">
+            You are the new successor.
         </div>
 
-        <div class="chosenSub">
-            You are the new successor.<br>
+        <div class="question">
             Will you accept?
         </div>
 
-        <div class="introButtons">
+        <div class="systemButtons">
 
-            <button
-                class="introButton"
-                id="yesButton">
+            <button id="yesButton">
                 YES
             </button>
 
-            <button
-                class="introButton"
-                id="noButton">
+            <button id="noButton">
                 NO
             </button>
 
@@ -778,19 +945,22 @@ body.systemGlitch {
 
 </div>
 
-<!-- REGISTRATION -->
+
+<!-- =========================
+     REGISTRATION
+========================= -->
 
 <div id="registrationScreen">
 
     <div class="registrationBox">
 
-        <div class="registrationTitle">
+        <div class="systemTitle">
             SYSTEM REGISTRATION
         </div>
 
-        <h1>
+        <h2>
             REGISTER PLAYER
-        </h1>
+        </h2>
 
         <p>
             Enter your name to continue.
@@ -799,279 +969,483 @@ body.systemGlitch {
         <input
             type="text"
             id="nameInput"
+            placeholder="Enter your name"
             maxlength="25"
-            placeholder="Enter your name">
+        >
 
         <button id="registerButton">
             REGISTER
         </button>
 
-        <div
-            class="registrationError"
-            id="registrationError">
+        <div id="registrationError">
+            Please enter your name.
         </div>
 
     </div>
 
 </div>
 
-<!-- SIDEBAR -->
 
-<aside class="sidebar">
+<!-- =========================
+     MAIN APP
+========================= -->
 
-    <div class="logo">
-        SYSTEM
-    </div>
+<div id="app">
 
-    <button class="sideButton" id="statusBtn">
-        STATUS
-    </button>
+    <div class="layout">
 
-    <button class="sideButton" id="questsBtn">
-        QUESTS
-    </button>
+        <!-- SIDEBAR -->
 
-    <button class="sideButton" id="rewardsBtn">
-        REWARDS
-    </button>
+        <aside class="sidebar">
 
-</aside>
-
-<!-- MAIN -->
-
-<main class="main">
-
-    <div class="glass playerCard">
-
-        <div class="playerTop">
-
-            <div>
-
-                <div class="playerName" id="playerName">
-                    PLAYER
-                </div>
-
-                <div class="playerInfo">
-                    LEVEL:
-                    <span id="level">1</span>
-                </div>
-
-                <div class="playerInfo">
-                    RANK:
-                    <span id="rank">E</span>
-                </div>
-
-            </div>
-
-            <div>
-
-                <div class="playerInfo">
-                    XP:
-                    <span id="xp">35</span>
-                    / 100
-                </div>
-
-                <div class="playerInfo">
-                    COINS:
-                    <span id="coins">0</span>
-                </div>
-
-                <div class="playerInfo">
-                    STAT POINTS:
-                    <span id="statPoints">0</span>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="xpContainer">
-
-            <div class="xpBar">
-
-                <div
-                    class="xpFill"
-                    id="xpFill">
-                </div>
-
+            <div class="logo">
+                SYSTEM
             </div>
 
             <button
-                class="action"
-                id="xpButton">
-                +25 XP
+                class="navButton active"
+                id="statusButton"
+            >
+                STATUS
             </button>
-
-        </div>
-
-        <div class="point-input">
-
-            <input
-                type="number"
-                id="pointsInput"
-                min="1"
-                placeholder="STAT POINTS">
 
             <button
-                class="action"
-                id="addPointsButton">
-                ADD POINTS
+                class="navButton"
+                id="questsButton"
+            >
+                QUESTS
             </button>
 
-        </div>
+            <button
+                class="navButton"
+                id="rewardsButton"
+            >
+                REWARDS
+            </button>
 
-        <div class="message" id="message">
-            SYSTEM ONLINE
-        </div>
+        </aside>
+
+
+        <!-- MAIN -->
+
+        <main class="main">
+
+            <div class="topBar">
+
+                <div class="pageTitle">
+                    SYSTEM
+                </div>
+
+                <button
+                    class="actionButton"
+                    id="xpButton"
+                >
+                    +25 XP
+                </button>
+
+            </div>
+
+
+            <!-- PLAYER -->
+
+            <section class="card">
+
+                <div class="playerCard">
+
+                    <div>
+
+                        <div class="label">
+                            PLAYER
+                        </div>
+
+                        <div
+                            class="playerName"
+                            id="playerName"
+                        >
+                            PLAYER
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="label">
+                            LEVEL
+                        </div>
+
+                        <div
+                            class="value"
+                            id="levelValue"
+                        >
+                            1
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="label">
+                            RANK
+                        </div>
+
+                        <div
+                            class="value"
+                            id="rankValue"
+                        >
+                            E
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="label">
+                            COINS
+                        </div>
+
+                        <div
+                            class="value"
+                            id="coinsValue"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="xpSection">
+
+                    <div class="xpTop">
+
+                        <span>
+                            EXPERIENCE
+                        </span>
+
+                        <span id="xpText">
+                            0 / 100
+                        </span>
+
+                    </div>
+
+                    <div class="xpBar">
+
+                        <div id="xpFill"></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- STATS -->
+
+            <section class="card">
+
+                <div class="sectionTitle">
+                    PLAYER STATS
+                </div>
+
+                <div class="statsGrid">
+
+
+                    <div class="stat">
+
+                        <div class="statName">
+                            STRENGTH
+                        </div>
+
+                        <div
+                            class="statValue"
+                            id="strengthValue"
+                        >
+                            10
+                        </div>
+
+                        <button
+                            class="statButton"
+                            data-stat="strength"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <div class="statName">
+                            AGILITY
+                        </div>
+
+                        <div
+                            class="statValue"
+                            id="agilityValue"
+                        >
+                            10
+                        </div>
+
+                        <button
+                            class="statButton"
+                            data-stat="agility"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <div class="statName">
+                            VITALITY
+                        </div>
+
+                        <div
+                            class="statValue"
+                            id="vitalityValue"
+                        >
+                            10
+                        </div>
+
+                        <button
+                            class="statButton"
+                            data-stat="vitality"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <div class="statName">
+                            INTELLIGENCE
+                        </div>
+
+                        <div
+                            class="statValue"
+                            id="intelligenceValue"
+                        >
+                            10
+                        </div>
+
+                        <button
+                            class="statButton"
+                            data-stat="intelligence"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div style="margin-top:25px;">
+
+                    <div class="label">
+                        AVAILABLE STAT POINTS
+                    </div>
+
+                    <div
+                        class="value"
+                        id="statPointsValue"
+                    >
+                        0
+                    </div>
+
+
+                    <div class="pointsBox">
+
+                        <input
+                            type="number"
+                            id="pointsInput"
+                            min="1"
+                            placeholder="Points"
+                        >
+
+                        <button
+                            class="actionButton"
+                            id="addPointsButton"
+                        >
+                            ADD POINTS
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- QUESTS -->
+
+            <section
+                class="card"
+                id="questsPanel"
+            >
+
+                <div class="sectionTitle">
+                    QUESTS
+                </div>
+
+
+                <div class="quest">
+
+                    <div>
+
+                        <div class="questTitle">
+                            Daily Training
+                        </div>
+
+                        <div class="questReward">
+                            Complete your daily training.
+                        </div>
+
+                    </div>
+
+                    <div>
+                        +50 XP
+                    </div>
+
+                </div>
+
+
+                <div class="quest">
+
+                    <div>
+
+                        <div class="questTitle">
+                            System Check
+                        </div>
+
+                        <div class="questReward">
+                            Review your status.
+                        </div>
+
+                    </div>
+
+                    <div>
+                        +25 XP
+                    </div>
+
+                </div>
+
+
+                <div class="quest">
+
+                    <div>
+
+                        <div class="questTitle">
+                            First Mission
+                        </div>
+
+                        <div class="questReward">
+                            Begin your journey.
+                        </div>
+
+                    </div>
+
+                    <div>
+                        +100 XP
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- REWARDS -->
+
+            <section
+                class="card"
+                id="rewardsPanel"
+                style="display:none;"
+            >
+
+                <div class="sectionTitle">
+                    REWARDS
+                </div>
+
+
+                <div class="rewardGrid">
+
+                    <div class="reward">
+
+                        <div class="label">
+                            REWARD
+                        </div>
+
+                        <h3>
+                            SYSTEM COINS
+                        </h3>
+
+                        <p>
+                            100 Coins
+                        </p>
+
+                    </div>
+
+
+                    <div class="reward">
+
+                        <div class="label">
+                            REWARD
+                        </div>
+
+                        <h3>
+                            XP BOOST
+                        </h3>
+
+                        <p>
+                            +50 XP
+                        </p>
+
+                    </div>
+
+
+                    <div class="reward">
+
+                        <div class="label">
+                            REWARD
+                        </div>
+
+                        <h3>
+                            RANK UP
+                        </h3>
+
+                        <p>
+                            Increase your rank.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <div id="systemMessage"></div>
+
+        </main>
 
     </div>
 
-    <!-- STATUS -->
+</div>
 
-    <section
-        class="glass section"
-        id="statusSection">
-
-        <h2>STATUS</h2>
-
-        <div class="stats">
-
-            <div class="glass stat">
-
-                <div class="statName">
-                    STRENGTH
-                </div>
-
-                <div class="statValue">
-                    <span id="strength">10</span>
-                </div>
-
-                <button
-                    class="plusButton"
-                    data-stat="strength">
-                    +
-                </button>
-
-            </div>
-
-            <div class="glass stat">
-
-                <div class="statName">
-                    AGILITY
-                </div>
-
-                <div class="statValue">
-                    <span id="agility">10</span>
-                </div>
-
-                <button
-                    class="plusButton"
-                    data-stat="agility">
-                    +
-                </button>
-
-            </div>
-
-            <div class="glass stat">
-
-                <div class="statName">
-                    VITALITY
-                </div>
-
-                <div class="statValue">
-                    <span id="vitality">10</span>
-                </div>
-
-                <button
-                    class="plusButton"
-                    data-stat="vitality">
-                    +
-                </button>
-
-            </div>
-
-            <div class="glass stat">
-
-                <div class="statName">
-                    INTELLIGENCE
-                </div>
-
-                <div class="statValue">
-                    <span id="intelligence">10</span>
-                </div>
-
-                <button
-                    class="plusButton"
-                    data-stat="intelligence">
-                    +
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- QUESTS -->
-
-    <section
-        class="glass section hiddenSection"
-        id="questsSection">
-
-        <h2>QUESTS</h2>
-
-        <div class="quest">
-            Daily Training
-            <button class="action">
-                COMPLETE QUEST
-            </button>
-        </div>
-
-        <div class="quest">
-            Gain Experience
-            <button class="action">
-                COMPLETE QUEST
-            </button>
-        </div>
-
-        <div class="quest">
-            Power Up
-            <button class="action">
-                COMPLETE QUEST
-            </button>
-        </div>
-
-    </section>
-
-    <!-- REWARDS -->
-
-    <section
-        class="glass section hiddenSection"
-        id="rewardsSection">
-
-        <h2>REWARDS</h2>
-
-        <div class="quest">
-            Daily Reward — 25 Coins
-        </div>
-
-        <div class="quest">
-            XP Boost — +50 XP
-        </div>
-
-        <div class="quest">
-            System Reward — Mystery
-        </div>
-
-    </section>
-
-</main>
 
 <script>
 
-/* ==================================================
+/* =========================
    ELEMENTS
-================================================== */
+========================= */
 
 const introScreen =
     document.getElementById("introScreen");
@@ -1079,302 +1453,71 @@ const introScreen =
 const registrationScreen =
     document.getElementById("registrationScreen");
 
+const app =
+    document.getElementById("app");
+
 const yesButton =
     document.getElementById("yesButton");
 
 const noButton =
     document.getElementById("noButton");
 
-const nameInput =
-    document.getElementById("nameInput");
-
 const registerButton =
     document.getElementById("registerButton");
 
+const nameInput =
+    document.getElementById("nameInput");
+
 const registrationError =
     document.getElementById("registrationError");
+
+const chosenText =
+    document.getElementById("chosenText");
 
 const glitchLayer =
     document.getElementById("glitchLayer");
 
 
-/* ==================================================
-   HEAVY GLITCH
-================================================== */
-
-function startGlitch(duration = 1800) {
-
-    glitchLayer.classList.add("active");
-    document.body.classList.add("systemGlitch");
-
-    setTimeout(function() {
-
-        glitchLayer.classList.remove("active");
-        document.body.classList.remove("systemGlitch");
-
-    }, duration);
-}
-
-
-/* ==================================================
-   ORIGINAL DARK SYSTEM VOICE
-================================================== */
-
-function systemVoice() {
-
-    if (!("speechSynthesis" in window)) {
-        return;
-    }
-
-    window.speechSynthesis.cancel();
-
-    const voiceText =
-        new SpeechSynthesisUtterance(
-            "You are the chosen one."
-        );
-
-    voiceText.lang = "en-US";
-
-    /*
-       Slow + deep + powerful
-       Original fantasy/system style
-    */
-
-    voiceText.rate = 0.55;
-    voiceText.pitch = 0.35;
-    voiceText.volume = 1;
-
-    window.speechSynthesis.speak(voiceText);
-}
-
-
-/* ==================================================
-   FIRST VISIT
-================================================== */
-
-const systemAccepted =
-    localStorage.getItem("systemAccepted");
-
-const registeredName =
-    localStorage.getItem("systemPlayerName");
-
-if (
-    systemAccepted === "true" &&
-    registeredName
-) {
-
-    introScreen.classList.add("hidden");
-
-} else {
-
-    /*
-       Start the visual disturbance
-    */
-
-    setTimeout(function() {
-
-        startGlitch(2200);
-
-    }, 250);
-
-}
-
-
-/* ==================================================
-   YES
-================================================== */
-
-yesButton.addEventListener(
-    "click",
-    function() {
-
-        /*
-           Start voice because this is
-           a user interaction.
-        */
-
-        systemVoice();
-
-        /*
-           Heavy glitch
-        */
-
-        startGlitch(2300);
-
-        /*
-           Save acceptance
-        */
-
-        localStorage.setItem(
-            "systemAccepted",
-            "true"
-        );
-
-        /*
-           Hide intro
-        */
-
-        introScreen.classList.add(
-            "hidden"
-        );
-
-        /*
-           Open registration
-        */
-
-        setTimeout(function() {
-
-            registrationScreen.classList.add(
-                "show"
-            );
-
-            nameInput.focus();
-
-        }, 850);
-
-    }
-);
-
-
-/* ==================================================
-   NO
-================================================== */
-
-noButton.addEventListener(
-    "click",
-    function() {
-
-        document.querySelector(
-            ".chosenText"
-        ).textContent =
-            "CONNECTION REJECTED";
-
-        document.querySelector(
-            ".chosenSub"
-        ).textContent =
-            "The System will remain unavailable.";
-
-        noButton.style.display =
-            "none";
-
-        yesButton.textContent =
-            "ACCEPT";
-
-        startGlitch(900);
-
-    }
-);
-
-
-/* ==================================================
-   REGISTER
-================================================== */
-
-function registerPlayer() {
-
-    const name =
-        nameInput.value.trim();
-
-    if (name === "") {
-
-        registrationError.textContent =
-            "Please enter your name.";
-
-        return;
-
-    }
-
-    localStorage.setItem(
-        "systemPlayerName",
-        name
-    );
-
-    registrationScreen.classList.remove(
-        "show"
-    );
-
-    document.getElementById(
-        "playerName"
-    ).textContent =
-        name.toUpperCase();
-
-    registrationError.textContent = "";
-
-}
-
-
-/* REGISTER BUTTON */
-
-registerButton.addEventListener(
-    "click",
-    registerPlayer
-);
-
-
-/* ENTER */
-
-nameInput.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (event.key === "Enter") {
-            registerPlayer();
-        }
-
-    }
-);
-
-
-/* ==================================================
-   LOAD NAME
-================================================== */
-
-if (registeredName) {
-
-    document.getElementById(
-        "playerName"
-    ).textContent =
-        registeredName.toUpperCase();
-
-}
-
-
-/* ==================================================
+/* =========================
    PLAYER DATA
-================================================== */
+========================= */
 
-let player =
-    JSON.parse(
-        localStorage.getItem(
-            "systemPlayer"
-        )
-    ) || {
+let player = JSON.parse(
+    localStorage.getItem("systemPlayer")
+) || {
 
-        level: 1,
-        xp: 35,
-        coins: 0,
+    name: "",
+
+    level: 1,
+
+    xp: 0,
+
+    coins: 0,
+
+    rank: "E",
+
+    statPoints: 0,
+
+    stats: {
 
         strength: 10,
+
         agility: 10,
+
         vitality: 10,
-        intelligence: 10,
 
-        statPoints: 0
+        intelligence: 10
 
-    };
+    }
 
-if (
-    typeof player.statPoints !== "number"
-) {
-    player.statPoints = 0;
-}
+};
 
 
-/* ==================================================
+/* =========================
    SAVE
-================================================== */
+========================= */
 
-function save() {
+function savePlayer() {
 
     localStorage.setItem(
         "systemPlayer",
@@ -1384,222 +1527,352 @@ function save() {
 }
 
 
-/* ==================================================
+/* =========================
+   VOICE
+========================= */
+
+function systemVoice() {
+
+    if (!("speechSynthesis" in window)) {
+        return;
+    }
+
+    speechSynthesis.cancel();
+
+    const voice =
+        new SpeechSynthesisUtterance(
+            "You are the chosen one."
+        );
+
+    voice.lang = "en-US";
+
+    voice.rate = 0.55;
+
+    voice.pitch = 0.35;
+
+    voice.volume = 1;
+
+    speechSynthesis.speak(voice);
+
+}
+
+
+/* =========================
+   GLITCH
+========================= */
+
+function startGlitch(duration = 1500) {
+
+    document.body.classList.add(
+        "systemGlitch"
+    );
+
+    setTimeout(() => {
+
+        document.body.classList.remove(
+            "systemGlitch"
+        );
+
+    }, duration);
+
+}
+
+
+/* =========================
+   INTRO
+========================= */
+
+function showIntro() {
+
+    introScreen.style.display =
+        "flex";
+
+    registrationScreen.style.display =
+        "none";
+
+    app.style.display =
+        "none";
+
+}
+
+
+function showRegistration() {
+
+    introScreen.style.display =
+        "none";
+
+    registrationScreen.style.display =
+        "flex";
+
+    app.style.display =
+        "none";
+
+    setTimeout(() => {
+
+        nameInput.focus();
+
+    }, 300);
+
+}
+
+
+function showApp() {
+
+    introScreen.style.display =
+        "none";
+
+    registrationScreen.style.display =
+        "none";
+
+    app.style.display =
+        "block";
+
+    updateUI();
+
+}
+
+
+/* =========================
+   FIRST VISIT
+========================= */
+
+const systemAccepted =
+    localStorage.getItem(
+        "systemAccepted"
+    );
+
+const savedName =
+    localStorage.getItem(
+        "systemPlayerName"
+    );
+
+
+if (
+    systemAccepted === "true" &&
+    savedName
+) {
+
+    player.name = savedName;
+
+    savePlayer();
+
+    showApp();
+
+} else {
+
+    showIntro();
+
+    setTimeout(() => {
+
+        startGlitch(1200);
+
+    }, 300);
+
+}
+
+
+/* =========================
+   YES
+========================= */
+
+yesButton.addEventListener(
+    "click",
+    () => {
+
+        systemVoice();
+
+        startGlitch(2300);
+
+        localStorage.setItem(
+            "systemAccepted",
+            "true"
+        );
+
+        setTimeout(() => {
+
+            showRegistration();
+
+        }, 900);
+
+    }
+);
+
+
+/* =========================
+   NO
+========================= */
+
+noButton.addEventListener(
+    "click",
+    () => {
+
+        startGlitch(1000);
+
+        chosenText.textContent =
+            "CONNECTION REJECTED";
+
+        noButton.style.display =
+            "none";
+
+        yesButton.textContent =
+            "ACCEPT";
+
+    }
+);
+
+
+/* =========================
+   REGISTER
+========================= */
+
+registerButton.addEventListener(
+    "click",
+    registerPlayer
+);
+
+
+nameInput.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            registerPlayer();
+
+        }
+
+    }
+);
+
+
+function registerPlayer() {
+
+    const name =
+        nameInput.value.trim();
+
+
+    if (!name) {
+
+        registrationError.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    registrationError.style.display =
+        "none";
+
+
+    player.name =
+        name;
+
+
+    localStorage.setItem(
+        "systemPlayerName",
+        name
+    );
+
+
+    savePlayer();
+
+    startGlitch(1200);
+
+
+    setTimeout(() => {
+
+        showApp();
+
+    }, 500);
+
+}
+
+
+/* =========================
    RANK
-================================================== */
+========================= */
 
-function getRank() {
+function updateRank() {
 
-    if (player.level >= 50) return "S";
-    if (player.level >= 40) return "A";
-    if (player.level >= 30) return "B";
-    if (player.level >= 20) return "C";
-    if (player.level >= 10) return "D";
+    if (player.level >= 50) {
 
-    return "E";
-}
+        player.rank = "S";
 
+    } else if (player.level >= 40) {
 
-/* ==================================================
-   UPDATE UI
-================================================== */
+        player.rank = "A";
 
-function updateUI() {
+    } else if (player.level >= 30) {
 
-    document.getElementById(
-        "level"
-    ).textContent =
-        player.level;
+        player.rank = "B";
 
-    document.getElementById(
-        "xp"
-    ).textContent =
-        player.xp;
+    } else if (player.level >= 20) {
 
-    document.getElementById(
-        "coins"
-    ).textContent =
-        player.coins;
+        player.rank = "C";
 
-    document.getElementById(
-        "statPoints"
-    ).textContent =
-        player.statPoints;
+    } else if (player.level >= 10) {
 
-    document.getElementById(
-        "rank"
-    ).textContent =
-        getRank();
+        player.rank = "D";
 
-    document.getElementById(
-        "strength"
-    ).textContent =
-        player.strength;
+    } else {
 
-    document.getElementById(
-        "agility"
-    ).textContent =
-        player.agility;
+        player.rank = "E";
 
-    document.getElementById(
-        "vitality"
-    ).textContent =
-        player.vitality;
-
-    document.getElementById(
-        "intelligence"
-    ).textContent =
-        player.intelligence;
-
-    document.getElementById(
-        "xpFill"
-    ).style.width =
-        player.xp + "%";
-
-    updatePlusButtons();
-
-    save();
+    }
 
 }
 
 
-/* ==================================================
+/* =========================
    XP
-================================================== */
+========================= */
 
 function addXP(amount) {
 
     player.xp += amount;
+
 
     while (
         player.xp >= 100
     ) {
 
         player.xp -= 100;
+
         player.level++;
-        player.coins += 25;
 
     }
 
-    document.getElementById(
-        "message"
-    ).textContent =
-        "XP added successfully.";
+
+    updateRank();
+
+    savePlayer();
 
     updateUI();
 
-}
 
-
-/* ==================================================
-   ADD STAT POINTS
-================================================== */
-
-function addStatPoints() {
-
-    const input =
+    const message =
         document.getElementById(
-            "pointsInput"
+            "systemMessage"
         );
 
-    const amount =
-        parseInt(input.value);
-
-    if (
-        isNaN(amount) ||
-        amount <= 0
-    ) {
-
-        document.getElementById(
-            "message"
-        ).textContent =
-            "Enter a valid number.";
-
-        return;
-    }
-
-    player.statPoints += amount;
-
-    document.getElementById(
-        "message"
-    ).textContent =
-        amount +
-        " stat points added.";
-
-    input.value = "";
-
-    updateUI();
+    message.textContent =
+        "+" + amount + " XP";
 
 }
 
 
-/* ==================================================
-   SPEND STAT
-================================================== */
-
-function spendStat(statName) {
-
-    if (
-        player.statPoints <= 0
-    ) {
-
-        document.getElementById(
-            "message"
-        ).textContent =
-            "You don't have stat points.";
-
-        return;
-    }
-
-    player[statName]++;
-    player.statPoints--;
-
-    document.getElementById(
-        "message"
-    ).textContent =
-        "Stat increased.";
-
-    updateUI();
-
-}
-
-
-/* ==================================================
-   PLUS BUTTONS
-================================================== */
-
-function updatePlusButtons() {
-
-    document
-        .querySelectorAll(
-            ".plusButton"
-        )
-        .forEach(function(button) {
-
-            button.disabled =
-                player.statPoints <= 0;
-
-            button.style.opacity =
-                player.statPoints <= 0
-                ? "0.4"
-                : "1";
-
-        });
-
-}
-
-
-/* ==================================================
+/* =========================
    XP BUTTON
-================================================== */
+========================= */
 
 document
-    .getElementById(
-        "xpButton"
-    )
+    .getElementById("xpButton")
     .addEventListener(
         "click",
-        function() {
+        () => {
 
             addXP(25);
 
@@ -1607,9 +1880,9 @@ document
     );
 
 
-/* ==================================================
-   ADD POINTS
-================================================== */
+/* =========================
+   ADD STAT POINTS
+========================= */
 
 document
     .getElementById(
@@ -1617,51 +1890,77 @@ document
     )
     .addEventListener(
         "click",
-        addStatPoints
-    );
+        () => {
 
+            const input =
+                document.getElementById(
+                    "pointsInput"
+                );
 
-/* ==================================================
-   ENTER FOR POINTS
-================================================== */
+            const amount =
+                parseInt(
+                    input.value
+                );
 
-document
-    .getElementById(
-        "pointsInput"
-    )
-    .addEventListener(
-        "keydown",
-        function(event) {
 
             if (
-                event.key === "Enter"
+                !amount ||
+                amount <= 0
             ) {
 
-                addStatPoints();
+                return;
 
             }
+
+
+            player.statPoints +=
+                amount;
+
+
+            input.value = "";
+
+            savePlayer();
+
+            updateUI();
 
         }
     );
 
 
-/* ==================================================
+/* =========================
    STAT BUTTONS
-================================================== */
+========================= */
 
 document
     .querySelectorAll(
-        ".plusButton"
+        ".statButton"
     )
-    .forEach(function(button) {
+    .forEach(button => {
 
         button.addEventListener(
             "click",
-            function() {
+            () => {
 
-                spendStat(
-                    button.dataset.stat
-                );
+                const stat =
+                    button.dataset.stat;
+
+
+                if (
+                    player.statPoints <= 0
+                ) {
+
+                    return;
+
+                }
+
+
+                player.stats[stat]++;
+
+                player.statPoints--;
+
+                savePlayer();
+
+                updateUI();
 
             }
         );
@@ -1669,101 +1968,193 @@ document
     });
 
 
-/* ==================================================
-   SECTIONS
-================================================== */
+/* =========================
+   UPDATE UI
+========================= */
 
-const statusSection =
+function updateUI() {
+
     document.getElementById(
-        "statusSection"
-    );
+        "playerName"
+    ).textContent =
+        player.name || "PLAYER";
 
-const questsSection =
+
     document.getElementById(
-        "questsSection"
-    );
+        "levelValue"
+    ).textContent =
+        player.level;
 
-const rewardsSection =
+
     document.getElementById(
-        "rewardsSection"
+        "rankValue"
+    ).textContent =
+        player.rank;
+
+
+    document.getElementById(
+        "coinsValue"
+    ).textContent =
+        player.coins;
+
+
+    document.getElementById(
+        "xpText"
+    ).textContent =
+        player.xp + " / 100";
+
+
+    document.getElementById(
+        "xpFill"
+    ).style.width =
+        player.xp + "%";
+
+
+    document.getElementById(
+        "statPointsValue"
+    ).textContent =
+        player.statPoints;
+
+
+    document.getElementById(
+        "strengthValue"
+    ).textContent =
+        player.stats.strength;
+
+
+    document.getElementById(
+        "agilityValue"
+    ).textContent =
+        player.stats.agility;
+
+
+    document.getElementById(
+        "vitalityValue"
+    ).textContent =
+        player.stats.vitality;
+
+
+    document.getElementById(
+        "intelligenceValue"
+    ).textContent =
+        player.stats.intelligence;
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+const statusButton =
+    document.getElementById(
+        "statusButton"
+    );
+
+const questsButton =
+    document.getElementById(
+        "questsButton"
+    );
+
+const rewardsButton =
+    document.getElementById(
+        "rewardsButton"
+    );
+
+const questsPanel =
+    document.getElementById(
+        "questsPanel"
+    );
+
+const rewardsPanel =
+    document.getElementById(
+        "rewardsPanel"
     );
 
 
-document
-    .getElementById(
-        "statusBtn"
-    )
-    .addEventListener(
-        "click",
-        function() {
+statusButton.addEventListener(
+    "click",
+    () => {
 
-            statusSection.classList.remove(
-                "hiddenSection"
+        setActive(statusButton);
+
+        questsPanel.style.display =
+            "none";
+
+        rewardsPanel.style.display =
+            "none";
+
+    }
+);
+
+
+questsButton.addEventListener(
+    "click",
+    () => {
+
+        setActive(questsButton);
+
+        questsPanel.style.display =
+            "block";
+
+        rewardsPanel.style.display =
+            "none";
+
+        questsPanel.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+);
+
+
+rewardsButton.addEventListener(
+    "click",
+    () => {
+
+        setActive(rewardsButton);
+
+        questsPanel.style.display =
+            "none";
+
+        rewardsPanel.style.display =
+            "block";
+
+        rewardsPanel.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+);
+
+
+function setActive(button) {
+
+    document
+        .querySelectorAll(
+            ".navButton"
+        )
+        .forEach(btn => {
+
+            btn.classList.remove(
+                "active"
             );
 
-            questsSection.classList.add(
-                "hiddenSection"
-            );
+        });
 
-            rewardsSection.classList.add(
-                "hiddenSection"
-            );
 
-        }
+    button.classList.add(
+        "active"
     );
 
-
-document
-    .getElementById(
-        "questsBtn"
-    )
-    .addEventListener(
-        "click",
-        function() {
-
-            statusSection.classList.add(
-                "hiddenSection"
-            );
-
-            questsSection.classList.remove(
-                "hiddenSection"
-            );
-
-            rewardsSection.classList.add(
-                "hiddenSection"
-            );
-
-        }
-    );
+}
 
 
-document
-    .getElementById(
-        "rewardsBtn"
-    )
-    .addEventListener(
-        "click",
-        function() {
+/* =========================
+   INITIAL UPDATE
+========================= */
 
-            statusSection.classList.add(
-                "hiddenSection"
-            );
-
-            questsSection.classList.add(
-                "hiddenSection"
-            );
-
-            rewardsSection.classList.remove(
-                "hiddenSection"
-            );
-
-        }
-    );
-
-
-/* ==================================================
-   START
-================================================== */
+updateRank();
 
 updateUI();
 
