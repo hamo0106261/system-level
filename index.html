@@ -39,15 +39,13 @@
 
         .system {
             width: 92%;
-            max-width: 650px;
+            max-width: 680px;
             max-height: 94vh;
             overflow-y: auto;
             padding: 30px;
 
             background: rgba(0, 110, 255, 0.08);
-
             border: 1px solid rgba(0, 160, 255, 0.65);
-
             border-radius: 20px;
 
             backdrop-filter: blur(20px);
@@ -56,20 +54,6 @@
             box-shadow:
                 0 0 20px rgba(0, 140, 255, 0.25),
                 0 0 60px rgba(0, 100, 255, 0.12);
-
-            animation: appear 0.8s ease;
-        }
-
-        @keyframes appear {
-            from {
-                opacity: 0;
-                transform: scale(0.94);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
         }
 
         .title {
@@ -122,8 +106,7 @@
             color: #ffffff;
             font-weight: bold;
 
-            text-shadow:
-                0 0 8px #008cff;
+            text-shadow: 0 0 8px #008cff;
         }
 
         .xp {
@@ -173,7 +156,8 @@
         .stats {
             display: grid;
 
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns:
+                repeat(2, 1fr);
 
             gap: 12px;
 
@@ -258,35 +242,6 @@
 
             box-shadow:
                 0 0 15px rgba(0, 153, 255, 0.45);
-
-            transform: translateY(-2px);
-        }
-
-        .system-message {
-            margin-top: 23px;
-
-            padding: 14px;
-
-            text-align: center;
-
-            color: #79d0ff;
-
-            background:
-                rgba(0, 120, 255, 0.06);
-
-            border:
-                1px solid rgba(0, 153, 255, 0.25);
-
-            border-radius: 10px;
-
-            text-shadow:
-                0 0 8px #008cff;
-
-            min-height: 45px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .xp-button {
@@ -307,28 +262,189 @@
             border-radius: 10px;
 
             cursor: pointer;
-
-            transition: 0.25s;
         }
 
         .xp-button:hover {
             background:
                 rgba(0, 140, 255, 0.22);
+        }
+
+        .system-message {
+            margin-top: 23px;
+
+            padding: 14px;
+
+            text-align: center;
+
+            color: #79d0ff;
+
+            background:
+                rgba(0, 120, 255, 0.06);
+
+            border:
+                1px solid rgba(0, 153, 255, 0.25);
+
+            border-radius: 10px;
+
+            min-height: 45px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+        /* QUEST WINDOW */
+
+        .quest-panel {
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background:
+                rgba(0, 90, 200, 0.08);
+
+            border:
+                1px solid rgba(0, 160, 255, 0.4);
+
+            border-radius: 15px;
+
+            animation: panelAppear 0.3s ease;
+        }
+
+        .quest-panel.active {
+            display: block;
+        }
+
+        @keyframes panelAppear {
+
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .quest-title {
+            color: #69c7ff;
+
+            font-size: 20px;
+
+            margin-bottom: 15px;
+
+            text-shadow:
+                0 0 10px #008cff;
+        }
+
+        .quest {
+            padding: 16px;
+
+            margin-bottom: 12px;
+
+            background:
+                rgba(0, 120, 255, 0.07);
+
+            border:
+                1px solid rgba(0, 153, 255, 0.25);
+
+            border-radius: 12px;
+        }
+
+        .quest:last-child {
+            margin-bottom: 0;
+        }
+
+        .quest-name {
+            color: #ffffff;
+
+            font-size: 16px;
+
+            margin-bottom: 8px;
+        }
+
+        .quest-description {
+            color: #8aa7c4;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            margin-bottom: 12px;
+        }
+
+        .quest-reward {
+            color: #65c8ff;
+
+            font-size: 13px;
+
+            margin-bottom: 12px;
+        }
+
+        .complete-button {
+            width: 100%;
+
+            padding: 10px;
+
+            border: 1px solid rgba(0, 170, 255, 0.45);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 140, 255, 0.1);
+
+            color: #8ed7ff;
+
+            cursor: pointer;
+        }
+
+        .complete-button:hover {
+            background:
+                rgba(0, 140, 255, 0.22);
 
             box-shadow:
-                0 0 18px rgba(0, 153, 255, 0.35);
+                0 0 15px rgba(0, 153, 255, 0.3);
+        }
+
+        .completed {
+            opacity: 0.5;
+        }
+
+        .completed .complete-button {
+            cursor: default;
+
+            color: #4cffaa;
+
+            border-color: rgba(76, 255, 170, 0.3);
+        }
+
+        .no-quest {
+            color: #7899b8;
+
+            text-align: center;
+
+            padding: 15px;
         }
 
         @media (max-width: 600px) {
 
             body {
                 overflow-y: auto;
+
                 padding: 10px 0;
             }
 
             .system {
                 width: 94%;
+
                 max-height: none;
+
                 padding: 20px;
             }
 
@@ -338,11 +454,6 @@
 
             .buttons {
                 grid-template-columns: 1fr;
-            }
-
-            .stats {
-                grid-template-columns:
-                    repeat(2, 1fr);
             }
         }
     </style>
@@ -363,6 +474,7 @@
             </div>
 
             <div class="info">
+
                 <span class="label">
                     LEVEL
                 </span>
@@ -372,9 +484,11 @@
                     id="level">
                     01
                 </span>
+
             </div>
 
             <div class="info">
+
                 <span class="label">
                     RANK
                 </span>
@@ -384,9 +498,11 @@
                     id="rank">
                     E
                 </span>
+
             </div>
 
             <div class="info">
+
                 <span class="label">
                     COINS
                 </span>
@@ -396,6 +512,7 @@
                     id="coins">
                     0
                 </span>
+
             </div>
 
             <div class="xp">
@@ -495,7 +612,7 @@
 
             <button
                 class="system-button"
-                onclick="showQuest()">
+                onclick="showQuests()">
                 QUESTS
             </button>
 
@@ -514,6 +631,19 @@
         </button>
 
         <div
+            class="quest-panel"
+            id="questPanel">
+
+            <div class="quest-title">
+                DAILY QUESTS
+            </div>
+
+            <div id="questList">
+            </div>
+
+        </div>
+
+        <div
             class="system-message"
             id="systemMessage">
 
@@ -525,27 +655,105 @@
 
     <script>
 
-        let player = JSON.parse(
-            localStorage.getItem("systemPlayer")
-        ) || {
+        let player =
+            JSON.parse(
+                localStorage.getItem(
+                    "systemPlayer"
+                )
+            ) || {
 
-            level: 1,
+                level: 1,
 
-            xp: 35,
+                xp: 35,
 
-            coins: 0,
+                coins: 0,
 
-            strength: 10,
+                strength: 10,
 
-            agility: 10,
+                agility: 10,
 
-            vitality: 10,
+                vitality: 10,
 
-            intelligence: 10
+                intelligence: 10
+            };
 
-        };
 
         const maxXP = 100;
+
+
+        let quests =
+            JSON.parse(
+                localStorage.getItem(
+                    "systemQuests"
+                )
+            ) || [
+
+                {
+                    id: 1,
+
+                    name: "First Step",
+
+                    description:
+                        "أكمل أول مهمة لك داخل النظام.",
+
+                    xp: 50,
+
+                    coins: 20,
+
+                    completed: false
+                },
+
+                {
+                    id: 2,
+
+                    name: "System Training",
+
+                    description:
+                        "احصل على 100 XP من النظام.",
+
+                    xp: 75,
+
+                    coins: 30,
+
+                    completed: false
+                },
+
+                {
+                    id: 3,
+
+                    name: "Rising Player",
+
+                    description:
+                        "ارفع مستوى شخصيتك.",
+
+                    xp: 100,
+
+                    coins: 50,
+
+                    completed: false
+                }
+
+            ];
+
+
+        function savePlayer() {
+
+            localStorage.setItem(
+                "systemPlayer",
+                JSON.stringify(player)
+            );
+
+        }
+
+
+        function saveQuests() {
+
+            localStorage.setItem(
+                "systemQuests",
+                JSON.stringify(quests)
+            );
+
+        }
 
 
         function getRank(level) {
@@ -574,16 +782,6 @@
         }
 
 
-        function savePlayer() {
-
-            localStorage.setItem(
-                "systemPlayer",
-                JSON.stringify(player)
-            );
-
-        }
-
-
         function updateSystem() {
 
             document.getElementById(
@@ -608,13 +806,16 @@
             document.getElementById(
                 "xpText"
             ).textContent =
-                player.xp + " / " + maxXP;
+                player.xp +
+                " / " +
+                maxXP;
 
 
             document.getElementById(
                 "xpFill"
             ).style.width =
-                (player.xp / maxXP * 100) + "%";
+                (player.xp / maxXP * 100) +
+                "%";
 
 
             document.getElementById(
@@ -650,9 +851,12 @@
 
             player.xp += amount;
 
-            let leveledUp = false;
+            let levelUp = false;
 
-            while (player.xp >= maxXP) {
+
+            while (
+                player.xp >= maxXP
+            ) {
 
                 player.xp -= maxXP;
 
@@ -668,12 +872,12 @@
 
                 player.intelligence++;
 
-                leveledUp = true;
+                levelUp = true;
 
             }
 
 
-            if (leveledUp) {
+            if (levelUp) {
 
                 document.getElementById(
                     "systemMessage"
@@ -686,7 +890,8 @@
                 document.getElementById(
                     "systemMessage"
                 ).textContent =
-                    "+" + amount +
+                    "+" +
+                    amount +
                     " XP ACQUIRED";
 
             }
@@ -700,6 +905,13 @@
         function showStatus() {
 
             document.getElementById(
+                "questPanel"
+            ).classList.remove(
+                "active"
+            );
+
+
+            document.getElementById(
                 "systemMessage"
             ).textContent =
                 "STATUS — LEVEL " +
@@ -710,17 +922,14 @@
         }
 
 
-        function showQuest() {
+        function showRewards() {
 
             document.getElementById(
-                "systemMessage"
-            ).textContent =
-                "QUESTS — NO ACTIVE QUESTS";
+                "questPanel"
+            ).classList.remove(
+                "active"
+            );
 
-        }
-
-
-        function showRewards() {
 
             document.getElementById(
                 "systemMessage"
@@ -728,6 +937,180 @@
                 "REWARDS — " +
                 player.coins +
                 " COINS";
+
+        }
+
+
+        function showQuests() {
+
+            const panel =
+                document.getElementById(
+                    "questPanel"
+                );
+
+
+            panel.classList.toggle(
+                "active"
+            );
+
+
+            if (
+                panel.classList.contains(
+                    "active"
+                )
+            ) {
+
+                renderQuests();
+
+            }
+
+        }
+
+
+        function renderQuests() {
+
+            const list =
+                document.getElementById(
+                    "questList"
+                );
+
+
+            list.innerHTML = "";
+
+
+            const activeQuests =
+                quests.filter(
+                    function (quest) {
+
+                        return !quest.completed;
+
+                    }
+                );
+
+
+            if (
+                activeQuests.length === 0
+            ) {
+
+                list.innerHTML =
+                    '<div class="no-quest">' +
+                    'لا توجد مهام متاحة حاليًا.' +
+                    '</div>';
+
+                return;
+
+            }
+
+
+            activeQuests.forEach(
+                function (quest) {
+
+                    const box =
+                        document.createElement(
+                            "div"
+                        );
+
+                    box.className =
+                        "quest";
+
+
+                    box.innerHTML =
+
+                        '<div class="quest-name">' +
+                        quest.name +
+                        '</div>' +
+
+                        '<div class="quest-description">' +
+                        quest.description +
+                        '</div>' +
+
+                        '<div class="quest-reward">' +
+                        '+ ' +
+                        quest.xp +
+                        ' XP &nbsp; | &nbsp; + ' +
+                        quest.coins +
+                        ' COINS' +
+                        '</div>' +
+
+                        '<button class="complete-button">' +
+                        'COMPLETE QUEST' +
+                        '</button>';
+
+
+                    const button =
+                        box.querySelector(
+                            ".complete-button"
+                        );
+
+
+                    button.onclick =
+                        function () {
+
+                            completeQuest(
+                                quest.id
+                            );
+
+                        };
+
+
+                    list.appendChild(
+                        box
+                    );
+
+                }
+            );
+
+        }
+
+
+        function completeQuest(id) {
+
+            const quest =
+                quests.find(
+                    function (item) {
+
+                        return item.id === id;
+
+                    }
+                );
+
+
+            if (
+                !quest ||
+                quest.completed
+            ) {
+
+                return;
+
+            }
+
+
+            quest.completed = true;
+
+
+            player.coins +=
+                quest.coins;
+
+
+            saveQuests();
+
+
+            addXP(
+                quest.xp
+            );
+
+
+            document.getElementById(
+                "systemMessage"
+            ).textContent =
+                "QUEST COMPLETE — +" +
+                quest.xp +
+                " XP — +" +
+                quest.coins +
+                " COINS";
+
+
+            renderQuests();
 
         }
 
