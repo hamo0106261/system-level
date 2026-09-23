@@ -18,11 +18,129 @@ body {
     color: white;
     background:
         radial-gradient(circle at 50% 0%, #073e70, #020812 45%, #000);
+    overflow-x: hidden;
 }
 
-/* =========================
+/* ==================================================
+   HEAVY GLITCH EFFECT
+================================================== */
+
+#glitchLayer {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0;
+    overflow: hidden;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(0,180,255,.08) 0px,
+            rgba(0,180,255,.08) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+#glitchLayer.active {
+    opacity: 1;
+    animation: screenGlitch .12s infinite;
+}
+
+#glitchLayer::before,
+#glitchLayer::after {
+    content: "";
+    position: absolute;
+    inset: -20px;
+}
+
+#glitchLayer::before {
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 7px,
+            rgba(0,140,255,.08) 8px,
+            transparent 10px
+        );
+    animation: glitchMove .08s infinite;
+}
+
+#glitchLayer::after {
+    background:
+        linear-gradient(
+            transparent 0%,
+            rgba(0,170,255,.08) 48%,
+            rgba(255,255,255,.15) 50%,
+            rgba(0,100,255,.08) 52%,
+            transparent 100%
+        );
+    animation: scanMove .25s linear infinite;
+}
+
+@keyframes screenGlitch {
+    0% {
+        transform: translate(0);
+        filter: brightness(1);
+    }
+
+    20% {
+        transform: translate(-7px, 2px);
+        filter: brightness(1.8) contrast(1.5);
+    }
+
+    40% {
+        transform: translate(6px, -3px);
+        filter: brightness(.7) contrast(2);
+    }
+
+    60% {
+        transform: translate(-3px, 5px);
+        filter: brightness(1.5);
+    }
+
+    80% {
+        transform: translate(5px, -2px);
+        filter: brightness(.8) contrast(1.8);
+    }
+
+    100% {
+        transform: translate(0);
+        filter: brightness(1);
+    }
+}
+
+@keyframes glitchMove {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(25px); }
+    100% { transform: translateX(-25px); }
+}
+
+@keyframes scanMove {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+body.systemGlitch {
+    animation: bodyShake .1s infinite;
+}
+
+@keyframes bodyShake {
+    0% { transform: translate(0); }
+    25% { transform: translate(-3px, 2px); }
+    50% { transform: translate(3px, -2px); }
+    75% { transform: translate(-2px, -1px); }
+    100% { transform: translate(0); }
+}
+
+/* ==================================================
    INTRO
-========================= */
+================================================== */
 
 #introScreen {
     position: fixed;
@@ -34,46 +152,99 @@ body {
     justify-content: center;
 
     background:
-        radial-gradient(circle, rgba(0,130,255,.18), rgba(0,0,0,.88));
+        radial-gradient(
+            circle at center,
+            rgba(0,130,255,.12),
+            rgba(0,0,0,.96)
+        );
 
-    backdrop-filter: blur(28px);
-    -webkit-backdrop-filter: blur(28px);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
 
-    transition: .8s ease;
+    transition:
+        opacity 1s ease,
+        filter 1s ease,
+        transform 1s ease;
 }
 
 #introScreen.hidden {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+    filter: blur(25px);
+    transform: scale(1.08);
 }
 
 .introBox {
-    width: min(92%, 620px);
-    padding: 50px 30px;
+    position: relative;
+
+    width: min(92%, 650px);
+    padding: 55px 30px;
 
     text-align: center;
 
-    background: rgba(0, 45, 85, .25);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,100,180,.20),
+            rgba(0,15,35,.42)
+        );
 
-    border: 1px solid rgba(40,180,255,.8);
+    border: 1px solid rgba(40,180,255,.9);
     border-radius: 20px;
 
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
 
     box-shadow:
-        0 0 25px rgba(0,140,255,.45),
-        0 0 80px rgba(0,100,255,.15),
-        inset 0 0 35px rgba(0,150,255,.08);
+        0 0 25px rgba(0,140,255,.6),
+        0 0 80px rgba(0,100,255,.25),
+        inset 0 0 50px rgba(0,150,255,.12);
+
+    animation: introFloat 3s ease-in-out infinite;
+}
+
+.introBox::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 22px;
+    pointer-events: none;
+
+    border: 1px solid rgba(0,180,255,.35);
+
+    animation: borderPulse 1s infinite;
+}
+
+@keyframes introFloat {
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes borderPulse {
+    0%,100% {
+        opacity: .3;
+    }
+
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 35px rgba(0,160,255,.8);
+    }
 }
 
 .systemSmall {
     color: #38baff;
-    letter-spacing: 8px;
+    letter-spacing: 10px;
     font-size: 13px;
     margin-bottom: 25px;
-    text-shadow: 0 0 15px #008cff;
+    text-shadow:
+        0 0 10px #008cff,
+        0 0 30px #008cff;
 }
 
 .chosenText {
@@ -84,15 +255,40 @@ body {
     text-shadow:
         0 0 10px #008cff,
         0 0 30px #006eff,
-        0 0 60px #004cff;
+        0 0 60px #004cff,
+        0 0 100px #003cff;
 
     margin-bottom: 20px;
+
+    animation: titleGlitch 1.8s infinite;
+}
+
+@keyframes titleGlitch {
+    0%,90%,100% {
+        transform: translate(0);
+        opacity: 1;
+    }
+
+    92% {
+        transform: translate(-4px, 1px);
+        opacity: .8;
+    }
+
+    94% {
+        transform: translate(5px, -2px);
+        opacity: .95;
+    }
+
+    96% {
+        transform: translate(-2px, 2px);
+    }
 }
 
 .chosenSub {
     color: #9ddfff;
     font-size: 18px;
     letter-spacing: 2px;
+    line-height: 1.8;
     margin-bottom: 35px;
 }
 
@@ -140,9 +336,9 @@ body {
     box-shadow: 0 0 15px rgba(100,120,140,.3);
 }
 
-/* =========================
+/* ==================================================
    REGISTRATION
-========================= */
+================================================== */
 
 #registrationScreen {
     position: fixed;
@@ -154,9 +350,11 @@ body {
     justify-content: center;
 
     background:
-        radial-gradient(circle at center,
-        rgba(0,120,255,.18),
-        rgba(0,0,0,.94));
+        radial-gradient(
+            circle at center,
+            rgba(0,120,255,.18),
+            rgba(0,0,0,.94)
+        );
 
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -255,13 +453,12 @@ body {
     margin-top: 12px;
 }
 
-/* =========================
+/* ==================================================
    SIDEBAR
-========================= */
+================================================== */
 
 .sidebar {
     position: fixed;
-
     left: 0;
     top: 0;
 
@@ -315,9 +512,9 @@ body {
         0 0 15px rgba(0,150,255,.3);
 }
 
-/* =========================
+/* ==================================================
    MAIN
-========================= */
+================================================== */
 
 .main {
     margin-left: 230px;
@@ -498,9 +695,9 @@ body {
     display: none;
 }
 
-/* =========================
+/* ==================================================
    MOBILE
-========================= */
+================================================== */
 
 @media(max-width:750px) {
 
@@ -539,9 +736,10 @@ body {
 
 <body>
 
-<!-- =========================
-     CHOSEN SCREEN
-========================= -->
+<!-- HEAVY GLITCH -->
+<div id="glitchLayer"></div>
+
+<!-- INTRO -->
 
 <div id="introScreen">
 
@@ -580,10 +778,7 @@ body {
 
 </div>
 
-
-<!-- =========================
-     REGISTRATION
-========================= -->
+<!-- REGISTRATION -->
 
 <div id="registrationScreen">
 
@@ -620,10 +815,7 @@ body {
 
 </div>
 
-
-<!-- =========================
-     SIDEBAR
-========================= -->
+<!-- SIDEBAR -->
 
 <aside class="sidebar">
 
@@ -631,30 +823,21 @@ body {
         SYSTEM
     </div>
 
-    <button
-        class="sideButton"
-        id="statusBtn">
+    <button class="sideButton" id="statusBtn">
         STATUS
     </button>
 
-    <button
-        class="sideButton"
-        id="questsBtn">
+    <button class="sideButton" id="questsBtn">
         QUESTS
     </button>
 
-    <button
-        class="sideButton"
-        id="rewardsBtn">
+    <button class="sideButton" id="rewardsBtn">
         REWARDS
     </button>
 
 </aside>
 
-
-<!-- =========================
-     MAIN SYSTEM
-========================= -->
+<!-- MAIN -->
 
 <main class="main">
 
@@ -664,9 +847,7 @@ body {
 
             <div>
 
-                <div
-                    class="playerName"
-                    id="playerName">
+                <div class="playerName" id="playerName">
                     PLAYER
                 </div>
 
@@ -704,7 +885,6 @@ body {
 
         </div>
 
-
         <div class="xpContainer">
 
             <div class="xpBar">
@@ -724,7 +904,6 @@ body {
 
         </div>
 
-
         <div class="point-input">
 
             <input
@@ -741,15 +920,11 @@ body {
 
         </div>
 
-
-        <div
-            class="message"
-            id="message">
+        <div class="message" id="message">
             SYSTEM ONLINE
         </div>
 
     </div>
-
 
     <!-- STATUS -->
 
@@ -779,7 +954,6 @@ body {
 
             </div>
 
-
             <div class="glass stat">
 
                 <div class="statName">
@@ -798,7 +972,6 @@ body {
 
             </div>
 
-
             <div class="glass stat">
 
                 <div class="statName">
@@ -816,7 +989,6 @@ body {
                 </button>
 
             </div>
-
 
             <div class="glass stat">
 
@@ -839,7 +1011,6 @@ body {
         </div>
 
     </section>
-
 
     <!-- QUESTS -->
 
@@ -872,7 +1043,6 @@ body {
 
     </section>
 
-
     <!-- REWARDS -->
 
     <section
@@ -897,37 +1067,10 @@ body {
 
 </main>
 
-
 <script>
 
 /* ==================================================
-   VOICE
-================================================== */
-
-function systemVoice() {
-
-    if (!("speechSynthesis" in window)) {
-        return;
-    }
-
-    window.speechSynthesis.cancel();
-
-    const voiceText =
-        new SpeechSynthesisUtterance(
-            "You are the chosen one."
-        );
-
-    voiceText.lang = "en-US";
-    voiceText.rate = 0.75;
-    voiceText.pitch = 0.7;
-    voiceText.volume = 1;
-
-    window.speechSynthesis.speak(voiceText);
-}
-
-
-/* ==================================================
-   FIRST VISIT SYSTEM
+   ELEMENTS
 ================================================== */
 
 const introScreen =
@@ -951,17 +1094,69 @@ const registerButton =
 const registrationError =
     document.getElementById("registrationError");
 
+const glitchLayer =
+    document.getElementById("glitchLayer");
+
+
+/* ==================================================
+   HEAVY GLITCH
+================================================== */
+
+function startGlitch(duration = 1800) {
+
+    glitchLayer.classList.add("active");
+    document.body.classList.add("systemGlitch");
+
+    setTimeout(function() {
+
+        glitchLayer.classList.remove("active");
+        document.body.classList.remove("systemGlitch");
+
+    }, duration);
+}
+
+
+/* ==================================================
+   ORIGINAL DARK SYSTEM VOICE
+================================================== */
+
+function systemVoice() {
+
+    if (!("speechSynthesis" in window)) {
+        return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const voiceText =
+        new SpeechSynthesisUtterance(
+            "You are the chosen one."
+        );
+
+    voiceText.lang = "en-US";
+
+    /*
+       Slow + deep + powerful
+       Original fantasy/system style
+    */
+
+    voiceText.rate = 0.55;
+    voiceText.pitch = 0.35;
+    voiceText.volume = 1;
+
+    window.speechSynthesis.speak(voiceText);
+}
+
+
+/* ==================================================
+   FIRST VISIT
+================================================== */
 
 const systemAccepted =
     localStorage.getItem("systemAccepted");
 
 const registeredName =
     localStorage.getItem("systemPlayerName");
-
-
-/*
-   لو الشخص مسجل من قبل
-*/
 
 if (
     systemAccepted === "true" &&
@@ -970,24 +1165,17 @@ if (
 
     introScreen.classList.add("hidden");
 
-}
-
-
-/*
-   أول فتح للموقع
-*/
-
-else {
+} else {
 
     /*
-       محاولة تشغيل صوت النظام
+       Start the visual disturbance
     */
 
     setTimeout(function() {
 
-        systemVoice();
+        startGlitch(2200);
 
-    }, 700);
+    }, 250);
 
 }
 
@@ -1001,15 +1189,20 @@ yesButton.addEventListener(
     function() {
 
         /*
-           نحاول تشغيل الصوت مرة أخرى
-           لأن المتصفح يسمح بالصوت بعد الضغط
+           Start voice because this is
+           a user interaction.
         */
 
         systemVoice();
 
+        /*
+           Heavy glitch
+        */
+
+        startGlitch(2300);
 
         /*
-           حفظ قبول النظام
+           Save acceptance
         */
 
         localStorage.setItem(
@@ -1017,18 +1210,16 @@ yesButton.addEventListener(
             "true"
         );
 
-
         /*
-           إخفاء شاشة الاختيار
+           Hide intro
         */
 
         introScreen.classList.add(
             "hidden"
         );
 
-
         /*
-           فتح التسجيل
+           Open registration
         */
 
         setTimeout(function() {
@@ -1039,7 +1230,7 @@ yesButton.addEventListener(
 
             nameInput.focus();
 
-        }, 600);
+        }, 850);
 
     }
 );
@@ -1058,7 +1249,6 @@ noButton.addEventListener(
         ).textContent =
             "CONNECTION REJECTED";
 
-
         document.querySelector(
             ".chosenSub"
         ).textContent =
@@ -1069,6 +1259,8 @@ noButton.addEventListener(
 
         yesButton.textContent =
             "ACCEPT";
+
+        startGlitch(900);
 
     }
 );
@@ -1083,7 +1275,6 @@ function registerPlayer() {
     const name =
         nameInput.value.trim();
 
-
     if (name === "") {
 
         registrationError.textContent =
@@ -1093,44 +1284,26 @@ function registerPlayer() {
 
     }
 
-
-    /*
-       حفظ الاسم
-    */
-
     localStorage.setItem(
         "systemPlayerName",
         name
     );
 
-
-    /*
-       إخفاء التسجيل
-    */
-
     registrationScreen.classList.remove(
         "show"
     );
-
-
-    /*
-       وضع الاسم داخل SYSTEM
-    */
 
     document.getElementById(
         "playerName"
     ).textContent =
         name.toUpperCase();
 
-
     registrationError.textContent = "";
 
 }
 
 
-/*
-   زر التسجيل
-*/
+/* REGISTER BUTTON */
 
 registerButton.addEventListener(
     "click",
@@ -1138,18 +1311,14 @@ registerButton.addEventListener(
 );
 
 
-/*
-   Enter للتسجيل
-*/
+/* ENTER */
 
 nameInput.addEventListener(
     "keydown",
     function(event) {
 
         if (event.key === "Enter") {
-
             registerPlayer();
-
         }
 
     }
@@ -1157,7 +1326,7 @@ nameInput.addEventListener(
 
 
 /* ==================================================
-   LOAD PLAYER NAME
+   LOAD NAME
 ================================================== */
 
 if (registeredName) {
@@ -1194,13 +1363,10 @@ let player =
 
     };
 
-
 if (
     typeof player.statPoints !== "number"
 ) {
-
     player.statPoints = 0;
-
 }
 
 
@@ -1225,17 +1391,12 @@ function save() {
 function getRank() {
 
     if (player.level >= 50) return "S";
-
     if (player.level >= 40) return "A";
-
     if (player.level >= 30) return "B";
-
     if (player.level >= 20) return "C";
-
     if (player.level >= 10) return "D";
 
     return "E";
-
 }
 
 
@@ -1250,60 +1411,50 @@ function updateUI() {
     ).textContent =
         player.level;
 
-
     document.getElementById(
         "xp"
     ).textContent =
         player.xp;
-
 
     document.getElementById(
         "coins"
     ).textContent =
         player.coins;
 
-
     document.getElementById(
         "statPoints"
     ).textContent =
         player.statPoints;
-
 
     document.getElementById(
         "rank"
     ).textContent =
         getRank();
 
-
     document.getElementById(
         "strength"
     ).textContent =
         player.strength;
-
 
     document.getElementById(
         "agility"
     ).textContent =
         player.agility;
 
-
     document.getElementById(
         "vitality"
     ).textContent =
         player.vitality;
-
 
     document.getElementById(
         "intelligence"
     ).textContent =
         player.intelligence;
 
-
     document.getElementById(
         "xpFill"
     ).style.width =
         player.xp + "%";
-
 
     updatePlusButtons();
 
@@ -1320,25 +1471,20 @@ function addXP(amount) {
 
     player.xp += amount;
 
-
     while (
         player.xp >= 100
     ) {
 
         player.xp -= 100;
-
         player.level++;
-
         player.coins += 25;
 
     }
-
 
     document.getElementById(
         "message"
     ).textContent =
         "XP added successfully.";
-
 
     updateUI();
 
@@ -1356,10 +1502,8 @@ function addStatPoints() {
             "pointsInput"
         );
 
-
     const amount =
         parseInt(input.value);
-
 
     if (
         isNaN(amount) ||
@@ -1372,19 +1516,15 @@ function addStatPoints() {
             "Enter a valid number.";
 
         return;
-
     }
 
-
     player.statPoints += amount;
-
 
     document.getElementById(
         "message"
     ).textContent =
         amount +
         " stat points added.";
-
 
     input.value = "";
 
@@ -1409,20 +1549,15 @@ function spendStat(statName) {
             "You don't have stat points.";
 
         return;
-
     }
 
-
     player[statName]++;
-
     player.statPoints--;
-
 
     document.getElementById(
         "message"
     ).textContent =
         "Stat increased.";
-
 
     updateUI();
 
@@ -1473,7 +1608,7 @@ document
 
 
 /* ==================================================
-   ADD POINTS BUTTON
+   ADD POINTS
 ================================================== */
 
 document
